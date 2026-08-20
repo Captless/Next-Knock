@@ -27,6 +27,7 @@ export const quoteSchema = z.object({
   amountCents: z.number().int().nonnegative().max(100_000_000),
   status: quoteStatusSchema,
   closedOutcome: closedOutcomeSchema.optional(),
+  lostReason: z.string().trim().max(40).optional(),
   followUpDate: z.string().optional(),
   notes: z.string().max(500).optional().or(z.literal('')),
 });

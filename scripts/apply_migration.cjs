@@ -1,0 +1,10 @@
+const { DatabaseSync } = require('node:sqlite');
+const fs = require('fs');
+const dbPath = process.argv[2];
+const sql = fs.readFileSync(process.argv[3], 'utf8');
+const db = new DatabaseSync(dbPath);
+db.exec(sql);
+const cols = db.prepare('SELECT name FROM pragma_table_info(?)').all('quotes').map((r) => r.name);
+console.log('quotes cols:', cols.join(','));
+const t = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='quote_activity'").get();
+console.log('quote_activity exists:', !!t);

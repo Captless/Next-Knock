@@ -7,7 +7,7 @@ import { json, jsonError, getSecret } from '../../_helpers';
 
 export async function onRequestGet({ request, env }: any) {
   try {
-    const userId = await requireUserId(request, getSecret(env));
+    const userId = await requireUserId(request, getSecret(env), env.DB);
     const row = await env.DB.prepare(
       'SELECT id, email, business_name FROM users WHERE id = ?',
     )
@@ -22,7 +22,7 @@ export async function onRequestGet({ request, env }: any) {
 
 export async function onRequestPatch({ request, env }: any) {
   try {
-    const userId = await requireUserId(request, getSecret(env));
+    const userId = await requireUserId(request, getSecret(env), env.DB);
     const body = await request.json().catch(() => null);
     const name = String(body?.businessName ?? '').trim();
     if (!name) return json({ error: 'Business name required' }, 422);

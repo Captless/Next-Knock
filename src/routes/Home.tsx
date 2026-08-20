@@ -1,53 +1,60 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuotes } from '@/hooks/useQuotes';
+import { useAuth } from '@/hooks/useAuth';
 import { bucketQuotes, todayISO } from '@/lib/dashboard';
-import { QuoteRow } from '@/components/QuoteRow';
+import { formatAmountCents } from '@/lib/quote-schema';
+import { FollowUpItem } from '@/components/FollowUpItem';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/Button';
 import { PlusIcon } from '@/components/Icon';
 
-function Section({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) {
+function greeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <section className="mb-6">
-      <div className="mb-2 flex items-baseline justify-between">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">{title}</h2>
-        {count !== undefined && <span className="text-xs text-ink-subtle">{count}</span>}
+    <div className="flex-1 rounded-lg border border-line bg-surface p-3 text-center shadow-card">
+      <div className="text-2xl font-semibold text-ink">{value}</div>
+      <div className="mt-0.5 text-xs font-medium uppercase tracking-wide text-ink-muted">
+        {label}
       </div>
-      {children}
-    </section>
+    </div>
   );
 }
 
 export function Home() {
   const { quotes, loading, error } = useQuotes();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const today = todayISO();
-  const { dueToday, active, recent } = bucketQuotes(quotes, today);
+  const { followUp, attention, activeSummary } = bucketQuotes(quotes, today);
 
-  if (error) {
+  if (error && !loading) {
     return (
       <ErrorState
         title="Couldn't load quotes"
         message={error}
-        action={
-          <Button onClick={() => navigate(0)}>Retry</Button>
-        }
+        action={<Button onClick={() => navigate(0)}>Retry</Button>}
       />
     );
   }
 
+  const name = user?.businessName?.trim() || 'there';
+
   return (
     <div>
       <div className="mb-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Follow up next</h1>
-        <p className="mt-0.5 text-sm text-ink-muted">
-          {dueToday.length > 0
-            ? `${dueToday.length} need attention today`
-            : active.length > 0
-              ? `${active.length} active quotes`
-              : 'No follow-ups due'}
+        <p className="text-sm font-semibold uppercase tracking-wide text-ink-subtle">
+          Next Knock
         </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          {greeting()}, {name}
+        </h1>
       </div>
 
       {quotes.length === 0 ? (
@@ -56,7 +63,7 @@ export function Home() {
         ) : (
           <EmptyState
             title="No quotes yet"
-            description="Add your first quote to start tracking follow-ups."
+            description="Create your first quote to start tracking your follow-ups."
             action={
               <Button onClick={() => navigate('/app/quotes/new')}>
                 <PlusIcon className="h-5 w-5" /> New quote
@@ -66,35 +73,67 @@ export function Home() {
         )
       ) : (
         <>
-          {dueToday.length > 0 && (
-            <Section title="Due today" count={dueToday.length}>
+          <section className="mb-6">
+            <div className="mb-2 flex items-baseline justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
+                Attention
+              </h2>
+            </div>
+            {attention.overdue === 0 && attention.dueToday === 0 ? (
+              <div className="rounded-lg border border-line bg-surface p-4 text-center shadow-card">
+                <p className="font-medium text-ink">You're all caught up.</p>
+                <p className="text-sm text-ink-muted">No follow-ups need your attention.</p>
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <Metric label="Overdue" value={attention.overdue} />
+                <Metric label="Due today" value={attention.dueToday} />
+              </div>
+            )}
+          </section>
+
+          {followUp.length > 0 && (
+            <section className="mb-6">
+              <div className="mb-2 flex items-baseline justify-between">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
+                  Follow up now
+                </h2>
+                {followUp.length > 3 && (
+                  <button
+                    onClick={() => navigate('/app/quotes?filter=follow_up')}
+                    className="text-xs font-medium text-ink-muted underline"
+                  >
+                    View all
+                  </button>
+                )}
+              </div>
               <div className="flex flex-col gap-2">
-                {dueToday.map((q) => (
-                  <QuoteRow key={q.id} quote={q} due />
+                {followUp.slice(0, 3).map((q) => (
+                  <FollowUpItem key={q.id} quote={q} />
                 ))}
               </div>
-            </Section>
+            </section>
           )}
 
-          {active.length > 0 && (
-            <Section title="Active quotes" count={active.length}>
-              <div className="flex flex-col gap-2">
-                {active.map((q) => (
-                  <QuoteRow key={q.id} quote={q} />
-                ))}
+          <section className="mb-6">
+            <div className="mb-2 flex items-baseline justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
+                Active quotes
+              </h2>
+              <button
+                onClick={() => navigate('/app/quotes?filter=active')}
+                className="text-xs font-medium text-ink-muted underline"
+              >
+                View active
+              </button>
+            </div>
+            <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+              <div className="text-2xl font-semibold text-ink">{activeSummary.count}</div>
+              <div className="text-sm text-ink-muted">
+                active quotes · {formatAmountCents(activeSummary.value)} potential value
               </div>
-            </Section>
-          )}
-
-          {recent.length > 0 && (
-            <Section title="Recent" count={recent.length}>
-              <div className="flex flex-col gap-2">
-                {recent.map((q) => (
-                  <QuoteRow key={q.id} quote={q} />
-                ))}
-              </div>
-            </Section>
-          )}
+            </div>
+          </section>
         </>
       )}
 

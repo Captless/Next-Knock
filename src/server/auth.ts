@@ -141,10 +141,18 @@ export function sessionTokenFromRequest(request: Request): string | null {
   return null;
 }
 
-export async function requireUserId(request: Request, secret: string): Promise<string> {
+export async function requireUserId(
+  request: Request,
+  secret: string,
+  db?: D1Database,
+): Promise<string> {
   const token = sessionTokenFromRequest(request);
   const userId = await verifySession(token, secret);
   if (!userId) throw new AuthError('Unauthorized', 401);
+  if (db) {
+    const row = await db.prepare('SELECT id FROM users WHERE id = ?').bind(userId).first();
+    if (!row) throw new AuthError('Unauthorized', 401);
+  }
   return userId;
 }
 
@@ -155,4 +163,33 @@ export function isSecureRequest(request: Request): boolean {
 
 export function authUserFromRow(row: { id: string; email: string; business_name: string }): AuthUser {
   return { id: row.id, email: row.email, businessName: row.business_name };
+}
+
+export async function changePassword(
+  db: D1Database,
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> {
+  if (!newPassword || newPassword.length < 8) {
+    throw new AuthError('New password must be at least 8 characters', 422);
+  }
+  const row = await db
+    .prepare('SELECT id, password_hash FROM users WHERE id = ?')
+    .bind(userId)
+    .first<{ id: string; password_hash: string }>();
+  if (!row) throw new AuthError('Account not found', 404);
+  const ok = await verifyPassword(currentPassword, row.password_hash);
+  if (!ok) throw new AuthError('Current password is incorrect', 401);
+  const hash = await hashPassword(newPassword);
+  await db
+    .prepare('UPDATE users SET password_hash = ? WHERE id = ?')
+    .bind(hash, userId)
+    .run();
+}
+
+export async function deleteAccount(db: D1Database, userId: string): Promise<void> {
+  await db.prepare('DELETE FROM quote_activity WHERE user_id = ?').bind(userId).run();
+  await db.prepare('DELETE FROM quotes WHERE user_id = ?').bind(userId).run();
+  await db.prepare('DELETE FROM users WHERE id = ?').bind(userId).run();
 }

@@ -2,7 +2,9 @@ import type { Quote, QuoteStatus } from './types';
 import type { QuoteInput } from './quote-schema';
 import { defaultFollowUpDate, todayISO } from './dashboard';
 
-export type QuotePatch = Partial<Omit<Quote, 'id' | 'createdAt' | 'updatedAt'>>;
+export type QuotePatch = Partial<Omit<Quote, 'id' | 'createdAt' | 'updatedAt'>> & {
+  lostReason?: string;
+};
 
 const needsFollowUp = (s: QuoteStatus): boolean => s === 'sent' || s === 'follow_up';
 
