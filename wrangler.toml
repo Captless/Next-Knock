@@ -1,0 +1,18 @@
+name = "next-knock"
+compatibility_date = "2025-01-15"
+pages_build_output_dir = "./dist"
+
+[assets]
+directory = "./public"
+
+# D1 database (Phase 4)
+[[d1_databases]]
+binding = "DB"
+database_name = "next-knock"
+database_id = "251b12ee-75d2-47f3-893e-b6b9cdc78a81"
+migrations_dir = "migrations"
+
+# Server-only secrets (set via: wrangler secret put NAME)
+# JWT_SECRET=
+# PAYMONGO_SECRET_KEY=
+# PAYMONGO_WEBHOOK_SECRET=
