@@ -39,6 +39,7 @@ export function FollowUpItem({ quote }: { quote: Quote }) {
               {formatAmountCents(quote.amountCents)}
             </span>
           </div>
+          <div className="mt-0.5 text-sm text-ink-muted">{quote.phone}</div>
           <div className="mt-0.5 flex items-center gap-2 text-sm text-ink-muted">
             <span className="truncate">{SERVICE_TYPE_LABEL[quote.serviceType]}</span>
           </div>
