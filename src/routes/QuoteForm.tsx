@@ -5,7 +5,6 @@ import { Button } from '@/components/Button';
 import { Field, Input, Textarea } from '@/components/Input';
 import { Select } from '@/components/Select';
 import { useToast } from '@/components/Toast';
-import { statusOptions } from '@/lib/select-options';
 import {
   quoteSchema,
   parseAmountToCents,
@@ -92,7 +91,6 @@ export function QuoteForm() {
           address: parsed.data.address || undefined,
           serviceType: parsed.data.serviceType,
           amountCents: parsed.data.amountCents,
-          status: parsed.data.status,
           followUpDate: parsed.data.followUpDate || undefined,
           notes: parsed.data.notes || undefined,
         });
@@ -173,15 +171,6 @@ export function QuoteForm() {
             value={form.amount}
             onChange={(e) => set('amount', e.target.value)}
             placeholder="180.00"
-          />
-        </Field>
-
-        <Field label="Status">
-          <Select
-            ariaLabel="Status"
-            value={form.status}
-            onChange={(v) => set('status', v as typeof form.status)}
-            options={statusOptions as unknown as Array<{ value: string; label: string }>}
           />
         </Field>
 

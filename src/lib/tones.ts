@@ -7,8 +7,6 @@ export const statusTone = (status: QuoteStatus): BadgeTone => {
       return 'muted';
     case 'sent':
       return 'info';
-    case 'follow_up':
-      return 'warn';
     case 'closed':
       return 'muted';
   }

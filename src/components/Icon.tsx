@@ -90,3 +90,10 @@ export const CheckIcon = (p: P) => (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
+
+export const SendIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M22 2 11 13" />
+    <path d="M22 2 15 22l-4-9-9-4 20-7z" />
+  </svg>
+);

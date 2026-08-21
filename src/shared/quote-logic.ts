@@ -6,7 +6,7 @@ export type QuotePatch = Partial<Omit<Quote, 'id' | 'createdAt' | 'updatedAt'>> 
   lostReason?: string;
 };
 
-const needsFollowUp = (s: QuoteStatus): boolean => s === 'sent' || s === 'follow_up';
+const needsFollowUp = (s: QuoteStatus): boolean => s === 'sent';
 
 export function normalizeNewQuote(input: QuoteInput): QuoteInput {
   let out: QuoteInput = { ...input };

@@ -21,7 +21,7 @@ describe('bucketQuotes', () => {
   it('separates due today and open count correctly', () => {
     const quotes: Quote[] = [
       q({ id: '1', status: 'sent', followUpDate: today }),
-      q({ id: '2', status: 'follow_up', followUpDate: today }),
+      q({ id: '2', status: 'sent', followUpDate: today }),
       q({ id: '3', status: 'sent', followUpDate: '2026-08-22' }),
       q({ id: '4', status: 'draft' }),
       q({ id: '5', status: 'closed', closedOutcome: 'won' }),

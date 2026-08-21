@@ -9,7 +9,7 @@ export const serviceTypeSchema = z.enum([
   'other',
 ]);
 
-export const quoteStatusSchema = z.enum(['draft', 'sent', 'follow_up', 'closed']);
+export const quoteStatusSchema = z.enum(['draft', 'sent', 'closed']);
 export const closedOutcomeSchema = z.enum(['won', 'lost', 'archived']);
 
 export const quoteSchema = z.object({

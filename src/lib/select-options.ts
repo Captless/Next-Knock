@@ -4,7 +4,6 @@ import { LOST_REASONS } from '@/types';
 export const statusOptions = [
   { value: 'draft', label: 'Draft' },
   { value: 'sent', label: 'Sent' },
-  { value: 'follow_up', label: 'Follow Up' },
   { value: 'closed', label: 'Closed' },
 ] as const;
 
@@ -27,7 +26,7 @@ export const quoteFilterOptions: Array<{ value: QuoteFilter; label: string }> = 
 export const lostReasonOptions = LOST_REASONS;
 
 export const isQuoteStatus = (v: string): v is QuoteStatus =>
-  v === 'draft' || v === 'sent' || v === 'follow_up' || v === 'closed';
+  v === 'draft' || v === 'sent' || v === 'closed';
 
 export const isClosedOutcome = (v: string): v is ClosedOutcome =>
   v === 'won' || v === 'lost' || v === 'archived';

@@ -1,4 +1,4 @@
-export type QuoteStatus = 'draft' | 'sent' | 'follow_up' | 'closed';
+export type QuoteStatus = 'draft' | 'sent' | 'closed';
 export type ClosedOutcome = 'won' | 'lost' | 'archived';
 export type ServiceType =
   | 'house'
@@ -84,7 +84,6 @@ export const SERVICE_TYPE_LABEL: Record<ServiceType, string> = {
 export const STATUS_LABEL: Record<QuoteStatus, string> = {
   draft: 'Draft',
   sent: 'Sent',
-  follow_up: 'Follow Up',
   closed: 'Closed',
 };
 

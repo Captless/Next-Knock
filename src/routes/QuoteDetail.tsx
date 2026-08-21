@@ -12,9 +12,7 @@ import {
 } from '@/types';
 import { formatAmountCents } from '@/lib/quote-schema';
 import { formatDate } from '@/lib/dashboard';
-import { statusOptions } from '@/lib/select-options';
 import { Button } from '@/components/Button';
-import { Select } from '@/components/Select';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { ErrorState } from '@/components/ErrorState';
 import { FollowUpControl } from '@/components/FollowUpControl';
@@ -27,6 +25,7 @@ import {
   TrashIcon,
   BackIcon,
   CheckIcon,
+  SendIcon,
 } from '@/components/Icon';
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
@@ -37,8 +36,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
     </div>
   );
 }
-
-const nonTerminalStatusOptions = statusOptions.filter((o) => o.value !== 'closed');
 
 export function QuoteDetail() {
   const { id } = useParams();
@@ -83,10 +80,10 @@ export function QuoteDetail() {
   const tel = `tel:${quote.phone.replace(/[^0-9+]/g, '')}`;
   const sms = `sms:${quote.phone.replace(/[^0-9+]/g, '')}`;
 
-  const onStatusChange = async (value: string) => {
+  const sendQuote = async () => {
     try {
-      await updateQuote(quote.id, { status: value as typeof quote.status });
-      notify(`Status: ${STATUS_LABEL[value as keyof typeof STATUS_LABEL]}`, 'success');
+      await updateQuote(quote.id, { status: 'sent' });
+      notify('Quote sent', 'success');
     } catch (err) {
       notify(err instanceof Error ? err.message : 'Update failed', 'error');
     }
@@ -198,20 +195,16 @@ export function QuoteDetail() {
 
       {!terminal && !isLost && (
         <>
+          {quote.status === 'draft' && (
+            <div className="mb-4">
+              <Button full onClick={sendQuote}>
+                <SendIcon className="h-5 w-5" /> Send quote
+              </Button>
+            </div>
+          )}
+
           <div className="mb-4">
             <FollowUpControl quote={quote} onSet={onFollowUp} />
-          </div>
-
-          <div className="mb-4 rounded-lg border border-line bg-surface p-4 shadow-card">
-            <p className="mb-2 text-sm font-medium text-ink">Update status</p>
-            <Select
-              ariaLabel="Status"
-              value={quote.status}
-              onChange={onStatusChange}
-              options={
-                nonTerminalStatusOptions as unknown as Array<{ value: string; label: string }>
-              }
-            />
           </div>
 
           <div className="mb-4 flex gap-2">
