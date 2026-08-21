@@ -11,7 +11,7 @@ export function Home() {
   const { quotes, loading, error } = useQuotes();
   const navigate = useNavigate();
   const today = todayISO();
-  const { followUp, activeSummary } = bucketQuotes(quotes, today);
+  const { followUp, openCount } = bucketQuotes(quotes, today);
 
   if (error && !loading) {
     return (
@@ -86,7 +86,7 @@ export function Home() {
               </button>
             </div>
             <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
-              <div className="text-2xl font-semibold text-ink">{activeSummary.count}</div>
+              <div className="text-2xl font-semibold text-ink">{openCount}</div>
               <div className="text-sm text-ink-muted">
                 open quotes
               </div>

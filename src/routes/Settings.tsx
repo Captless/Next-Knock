@@ -70,7 +70,7 @@ function ChangePassword() {
       </Field>
       {error && <p className="text-xs text-danger">{error}</p>}
       <div className="flex gap-2">
-        <Button variant="secondary" full onClick={() => setOpen(false)}>
+        <Button variant="secondary" full disabled={saving} onClick={() => setOpen(false)}>
           Cancel
         </Button>
         <Button full disabled={saving} onClick={submit}>
@@ -81,8 +81,16 @@ function ChangePassword() {
   );
 }
 
+function SectionLabel({ children }: { children: string }) {
+  return (
+    <h2 className="px-1 text-xs font-semibold uppercase tracking-wide text-ink-subtle">
+      {children}
+    </h2>
+  );
+}
+
 export function Settings() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, refresh } = useAuth();
   const navigate = useNavigate();
   const { notify } = useToast();
   const [name, setName] = useState(user?.businessName ?? '');
@@ -96,6 +104,7 @@ export function Settings() {
       await api.patch<{ businessName: string }>('/api/auth/me', {
         businessName: name.trim() || 'My Cleaning Business',
       });
+      await refresh();
       notify('Settings saved', 'success');
     } catch {
       notify('Could not save', 'error');
@@ -126,49 +135,59 @@ export function Settings() {
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold tracking-tight text-ink">Settings</h1>
 
-      <Card>
-        <Field label="Business name">
-          <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Bright Clean Co."
-          />
-        </Field>
-        <Button className="mt-3" full onClick={save} disabled={saving}>
-          {saving ? 'Saving…' : 'Save'}
+      <section className="flex flex-col gap-3">
+        <SectionLabel>Account</SectionLabel>
+        <Card>
+          <Field label="Business name">
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Bright Clean Co."
+            />
+          </Field>
+          <Button className="mt-3" full onClick={save} disabled={saving}>
+            {saving ? 'Saving…' : 'Save'}
+          </Button>
+        </Card>
+
+        <Card>
+          <Field label="Email">
+            <Input value={user?.email ?? ''} readOnly disabled />
+          </Field>
+        </Card>
+
+        <Card>
+          <p className="mb-3 text-sm font-medium text-ink">Change password</p>
+          <ChangePassword />
+        </Card>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionLabel>Account actions</SectionLabel>
+        <Button variant="secondary" full onClick={logout}>
+          Log out
         </Button>
-      </Card>
 
-      <Card>
-        <Field label="Email">
-          <Input value={user?.email ?? ''} readOnly disabled />
-        </Field>
-      </Card>
-
-      <Card>
-        <p className="mb-3 text-sm font-medium text-ink">Change password</p>
-        <ChangePassword />
-      </Card>
-
-      <Button variant="secondary" full onClick={logout}>
-        Log out
-      </Button>
-
-      <Card>
-        <Button variant="ghost" full className="text-danger" onClick={() => setConfirmDelete(true)}>
-          Delete account
-        </Button>
-      </Card>
+        <div className="mt-2 rounded-lg border border-danger/40 bg-danger/5 p-4">
+          <p className="mb-1 text-sm font-semibold text-danger">Danger zone</p>
+          <p className="mb-3 text-xs text-ink-muted">
+            Permanently delete your account and all associated quotes. This cannot be undone.
+          </p>
+          <Button variant="danger" full onClick={() => setConfirmDelete(true)}>
+            Delete account
+          </Button>
+        </div>
+      </section>
 
       <ConfirmDialog
         open={confirmDelete}
         title="Delete account?"
-        message="This permanently deletes your account and all associated quotes. This cannot be undone."
+        message="This permanently deletes your account and all associated data. This cannot be undone."
         confirmLabel="Delete account"
+        pending={deleting}
         onConfirm={onDelete}
         onCancel={() => setConfirmDelete(false)}
       />
-      {deleting && <p className="text-center text-sm text-ink-muted">Deleting…</p>}
     </div>
   );
 }

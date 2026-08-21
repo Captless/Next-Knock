@@ -39,26 +39,21 @@ export const isFollowUp = (q: Quote, today: string): boolean =>
   !!q.followUpDate && !isTerminal(q) && (isOverdue(q, today) || isDueToday(q, today));
 
 export interface DashboardBuckets {
-  overdue: Quote[];
-  dueToday: Quote[];
   /** Actionable follow-ups: overdue (oldest first) then due today. */
   followUp: Quote[];
-  /** Quotes not in a terminal outcome. */
-  active: Quote[];
-  attention: { overdue: number; dueToday: number };
-  activeSummary: { count: number; value: number };
-  recent: Quote[];
+  /** Count of quotes not in a terminal outcome. */
+  openCount: number;
 }
 
 export const bucketQuotes = (quotes: Quote[], today: string): DashboardBuckets => {
   const overdue: Quote[] = [];
   const dueToday: Quote[] = [];
-  const active: Quote[] = [];
+  let openCount = 0;
 
   for (const q of quotes) {
     if (isOverdue(q, today)) overdue.push(q);
     else if (isDueToday(q, today)) dueToday.push(q);
-    if (isActive(q)) active.push(q);
+    if (isActive(q)) openCount++;
   }
 
   const byDateAsc = (a: Quote, b: Quote) =>
@@ -66,26 +61,8 @@ export const bucketQuotes = (quotes: Quote[], today: string): DashboardBuckets =
   overdue.sort(byDateAsc);
   dueToday.sort(byDateAsc);
 
-  const followUp = [...overdue, ...dueToday];
-
-  const value = active.reduce((sum, q) => sum + (q.amountCents ?? 0), 0);
-
-  const sorted = [...quotes].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  );
-  const recent: Quote[] = [];
-  for (const q of sorted) {
-    if (recent.length >= 5) break;
-    recent.push(q);
-  }
-
   return {
-    overdue,
-    dueToday,
-    followUp,
-    active,
-    attention: { overdue: overdue.length, dueToday: dueToday.length },
-    activeSummary: { count: active.length, value },
-    recent,
+    followUp: [...overdue, ...dueToday],
+    openCount,
   };
 };

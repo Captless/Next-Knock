@@ -18,7 +18,7 @@ const q = (over: Partial<Quote>): Quote => ({
 describe('bucketQuotes', () => {
   const today = '2026-08-19';
 
-  it('separates due today, active, recent correctly', () => {
+  it('separates due today and open count correctly', () => {
     const quotes: Quote[] = [
       q({ id: '1', status: 'sent', followUpDate: today }),
       q({ id: '2', status: 'follow_up', followUpDate: today }),
@@ -27,39 +27,30 @@ describe('bucketQuotes', () => {
       q({ id: '5', status: 'closed', closedOutcome: 'won' }),
     ];
     const out = bucketQuotes(quotes, today);
-    expect(out.dueToday.map((x) => x.id)).toEqual(['1', '2']);
-    expect(out.overdue).toEqual([]);
-    expect(out.active.map((x) => x.id)).toEqual(['1', '2', '3', '4']);
-    expect(out.attention).toEqual({ overdue: 0, dueToday: 2 });
-    expect(out.activeSummary).toEqual({ count: 4, value: 50000 });
-    expect(out.recent.map((x) => x.id)).toEqual(['1', '2', '3', '4', '5']);
+    expect(out.followUp.map((x) => x.id)).toEqual(['1', '2']);
+    expect(out.openCount).toBe(4);
   });
 
   it('treats past dates as overdue', () => {
     const quotes: Quote[] = [q({ id: '1', status: 'sent', followUpDate: '2026-08-10' })];
     const out = bucketQuotes(quotes, today);
-    expect(out.overdue.map((x) => x.id)).toEqual(['1']);
-    expect(out.dueToday).toEqual([]);
-    expect(out.attention).toEqual({ overdue: 1, dueToday: 0 });
+    expect(out.followUp.map((x) => x.id)).toEqual(['1']);
   });
 
-  it('excludes won/lost from active and follow-up', () => {
+  it('excludes won/lost from follow-up and open count', () => {
     const quotes: Quote[] = [
       q({ id: '1', status: 'closed', closedOutcome: 'lost', followUpDate: '2026-08-10' }),
       q({ id: '2', status: 'closed', closedOutcome: 'won' }),
     ];
     const out = bucketQuotes(quotes, today);
-    expect(out.active).toEqual([]);
-    expect(out.overdue).toEqual([]);
-    expect(out.dueToday).toEqual([]);
-    expect(out.attention).toEqual({ overdue: 0, dueToday: 0 });
+    expect(out.followUp).toEqual([]);
+    expect(out.openCount).toBe(0);
   });
 
   it('returns empty buckets when no quotes', () => {
     const out = bucketQuotes([], today);
-    expect(out.dueToday).toEqual([]);
-    expect(out.active).toEqual([]);
-    expect(out.recent).toEqual([]);
+    expect(out.followUp).toEqual([]);
+    expect(out.openCount).toBe(0);
   });
 });
 
