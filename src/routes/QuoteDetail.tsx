@@ -136,108 +136,116 @@ export function QuoteDetail() {
   const isLost = quote.status === 'closed' && quote.closedOutcome === 'lost';
 
   return (
-    <div>
-      <div className="mb-4 flex items-center justify-between">
-        <button
-          onClick={() => navigate('/app/quotes')}
-          className="inline-flex items-center gap-1 text-sm text-ink-muted"
-        >
-          <BackIcon className="h-5 w-5" /> Quotes
-        </button>
-        <button
-          onClick={() => navigate(`/app/quotes/${quote.id}/edit`)}
-          className="inline-flex items-center gap-1 text-sm font-medium text-ink"
-        >
-          <EditIcon className="h-4 w-4" /> Edit
-        </button>
+    <div className="lg:grid lg:grid-cols-[1fr_350px] lg:gap-6">
+      <div className="min-w-0">
+        <div className="mb-4 flex items-center justify-between">
+          <button
+            onClick={() => navigate('/app/quotes')}
+            className="inline-flex items-center gap-1 text-sm text-ink-muted"
+          >
+            <BackIcon className="h-5 w-5" /> Quotes
+          </button>
+          <button
+            onClick={() => navigate(`/app/quotes/${quote.id}/edit`)}
+            className="inline-flex items-center gap-1 text-sm font-medium text-ink"
+          >
+            <EditIcon className="h-4 w-4" /> Edit
+          </button>
+        </div>
+
+        <div className="mb-4 flex items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-ink">
+            {quote.customerName}
+          </h1>
+          {quote.status === 'closed' && quote.closedOutcome ? (
+            <Badge tone={outcomeTone(quote.closedOutcome)}>
+              {CLOSED_OUTCOME_LABEL[quote.closedOutcome]}
+            </Badge>
+          ) : (
+            <Badge tone={statusTone(quote.status)}>{STATUS_LABEL[quote.status]}</Badge>
+          )}
+        </div>
+
+        <div className="mb-4 grid grid-cols-2 gap-2">
+          <a href={tel} className="tap">
+            <Button variant="primary" full>
+              <PhoneIcon className="h-5 w-5" /> Call
+            </Button>
+          </a>
+          <a href={sms} className="tap">
+            <Button variant="secondary" full>
+              <MessageIcon className="h-5 w-5" /> Message
+            </Button>
+          </a>
+        </div>
+
+        <div className="mb-4 rounded-lg border border-line bg-surface p-4 shadow-card">
+          <Row label="Service" value={SERVICE_TYPE_LABEL[quote.serviceType]} />
+          <Row label="Quote amount" value={formatAmountCents(quote.amountCents)} />
+          <Row label="Phone" value={quote.phone} />
+          {quote.email && <Row label="Email" value={quote.email} />}
+          {quote.address && <Row label="Address" value={quote.address} />}
+          {quote.lostReason && <Row label="Lost reason" value={quote.lostReason} />}
+          <Row
+            label="Follow-up"
+            value={quote.followUpDate ? formatDate(quote.followUpDate) : '—'}
+          />
+          {quote.notes && <Row label="Notes" value={quote.notes} />}
+          <Row label="Created" value={formatDate(quote.createdAt)} />
+        </div>
+
+        <div className="mb-4 lg:hidden">
+          <ActivityHistory activity={activity} />
+        </div>
       </div>
 
-      <div className="mb-4 flex items-center gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">
-          {quote.customerName}
-        </h1>
-        {quote.status === 'closed' && quote.closedOutcome ? (
-          <Badge tone={outcomeTone(quote.closedOutcome)}>
-            {CLOSED_OUTCOME_LABEL[quote.closedOutcome]}
-          </Badge>
-        ) : (
-          <Badge tone={statusTone(quote.status)}>{STATUS_LABEL[quote.status]}</Badge>
-        )}
-      </div>
+      <aside className="flex flex-col gap-4 lg:sticky lg:top-6 lg:self-start">
+        {!terminal && !isLost && (
+          <>
+            {quote.status === 'draft' && (
+              <div>
+                <Button full onClick={sendQuote}>
+                  <SendIcon className="h-5 w-5" /> Send quote
+                </Button>
+              </div>
+            )}
 
-      <div className="mb-4 grid grid-cols-2 gap-2">
-        <a href={tel} className="tap">
-          <Button variant="primary" full>
-            <PhoneIcon className="h-5 w-5" /> Call
-          </Button>
-        </a>
-        <a href={sms} className="tap">
-          <Button variant="secondary" full>
-            <MessageIcon className="h-5 w-5" /> Message
-          </Button>
-        </a>
-      </div>
+            <div>
+              <FollowUpControl quote={quote} onSet={onFollowUp} />
+            </div>
 
-      <div className="mb-4 rounded-lg border border-line bg-surface p-4 shadow-card">
-        <Row label="Service" value={SERVICE_TYPE_LABEL[quote.serviceType]} />
-        <Row label="Quote amount" value={formatAmountCents(quote.amountCents)} />
-        <Row label="Phone" value={quote.phone} />
-        {quote.email && <Row label="Email" value={quote.email} />}
-        {quote.address && <Row label="Address" value={quote.address} />}
-        {quote.lostReason && <Row label="Lost reason" value={quote.lostReason} />}
-        <Row
-          label="Follow-up"
-          value={quote.followUpDate ? formatDate(quote.followUpDate) : '—'}
-        />
-        {quote.notes && <Row label="Notes" value={quote.notes} />}
-        <Row label="Created" value={formatDate(quote.createdAt)} />
-      </div>
-
-      {!terminal && !isLost && (
-        <>
-          {quote.status === 'draft' && (
-            <div className="mb-4">
-              <Button full onClick={sendQuote}>
-                <SendIcon className="h-5 w-5" /> Send quote
+            <div className="flex gap-2">
+              <Button variant="secondary" full onClick={markWon}>
+                <CheckIcon className="h-5 w-5" /> Mark Won
+              </Button>
+              <Button variant="secondary" full onClick={() => setLostOpen(true)}>
+                Mark Lost
               </Button>
             </div>
-          )}
+          </>
+        )}
 
-          <div className="mb-4">
-            <FollowUpControl quote={quote} onSet={onFollowUp} />
+        {terminal || isLost ? (
+          <div className="rounded-lg border border-line bg-surface p-4 text-center shadow-card">
+            <p className="text-sm text-ink-muted">
+              This quote is {isLost ? 'lost' : 'won'} and no longer needs follow-up.
+            </p>
           </div>
+        ) : null}
 
-          <div className="mb-4 flex gap-2">
-            <Button variant="secondary" full onClick={markWon}>
-              <CheckIcon className="h-5 w-5" /> Mark Won
-            </Button>
-            <Button variant="secondary" full onClick={() => setLostOpen(true)}>
-              Mark Lost
-            </Button>
-          </div>
-        </>
-      )}
-
-      {terminal || isLost ? (
-        <div className="mb-4 rounded-lg border border-line bg-surface p-4 text-center shadow-card">
-          <p className="text-sm text-ink-muted">
-            This quote is {isLost ? 'lost' : 'won'} and no longer needs follow-up.
-          </p>
+        <div className="hidden lg:block">
+          <ActivityHistory activity={activity} />
         </div>
-      ) : null}
 
-      <div className="mb-4">
-        <ActivityHistory activity={activity} />
-      </div>
-
-      <Button
-        variant="ghost"
-        full
-        className="mt-2 text-danger"
-        onClick={() => setConfirm(true)}
-      >
-        <TrashIcon className="h-5 w-5" /> Delete quote
-      </Button>
+        <Button
+          variant="ghost"
+          full
+          className="text-danger"
+          onClick={() => setConfirm(true)}
+        >
+          <TrashIcon className="h-5 w-5" /> Delete quote
+        </Button>
+      </aside>
 
       <ConfirmDialog
         open={confirm}

@@ -123,7 +123,7 @@ export function Quotes() {
               <EmptyState title="No quotes here" description="No quotes match this filter." />
             )
           ) : (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3">
               {sorted.map((q) => (
                 <QuoteRow key={q.id} quote={q} />
               ))}
@@ -134,7 +134,7 @@ export function Quotes() {
 
       <Button
         full
-        className="fixed inset-x-0 bottom-20 z-30 mx-auto max-w-md"
+        className="fixed inset-x-0 bottom-20 z-30 mx-auto max-w-md lg:hidden"
         onClick={() => navigate('/app/quotes/new')}
       >
         <PlusIcon className="h-5 w-5" /> New quote

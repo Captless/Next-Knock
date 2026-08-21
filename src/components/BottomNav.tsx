@@ -10,7 +10,7 @@ const items = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur safe-bottom">
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur safe-bottom lg:hidden">
       <div className="mx-auto flex max-w-md items-stretch justify-around">
         {items.map(({ to, label, Icon, end }) => (
           <NavLink

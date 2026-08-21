@@ -109,7 +109,7 @@ export function QuoteForm() {
   };
 
   return (
-    <div>
+    <div className="mx-auto max-w-2xl">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 inline-flex items-center gap-1 text-sm text-ink-muted"

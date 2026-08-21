@@ -119,10 +119,8 @@ export function Settings() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold tracking-tight text-ink">Settings</h1>
-
-      <section className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
+      <section className="flex flex-col gap-4">
         <SectionLabel>Account</SectionLabel>
         <Card>
           <div className="flex flex-col gap-3">
@@ -137,9 +135,9 @@ export function Settings() {
               {saving ? 'Saving…' : 'Save changes'}
             </Button>
           </div>
+        </Card>
 
-          <div className="my-4 border-t border-line" />
-
+        <Card>
           <div className="flex flex-col gap-1">
             <span className="text-sm font-medium text-ink">Email</span>
             <p className="break-words text-sm text-ink-muted">{user?.email}</p>
@@ -167,21 +165,23 @@ export function Settings() {
         </Card>
       </section>
 
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-4">
         <SectionLabel>Account actions</SectionLabel>
-        <Button variant="secondary" full onClick={logout}>
-          Log out
-        </Button>
-
-        <div className="rounded-lg border border-danger/40 bg-danger/5 p-4">
-          <p className="mb-2 text-xs font-semibold text-danger">Danger zone</p>
-          <p className="mb-3 text-xs text-ink-muted">
-            Permanently delete your account and all associated quotes. This cannot be undone.
-          </p>
-          <Button variant="danger" full onClick={() => setConfirmDelete(true)}>
-            Delete account
+        <Card>
+          <Button variant="secondary" full onClick={logout}>
+            Log out
           </Button>
-        </div>
+
+          <div className="mt-4 border-t border-line pt-4">
+            <p className="mb-2 text-sm font-semibold text-danger">Danger zone</p>
+            <p className="mb-3 text-sm text-ink-muted">
+              Permanently delete your account and all associated quotes. This cannot be undone.
+            </p>
+            <Button variant="danger" full onClick={() => setConfirmDelete(true)}>
+              Delete account
+            </Button>
+          </div>
+        </Card>
       </section>
 
       <ConfirmDialog
