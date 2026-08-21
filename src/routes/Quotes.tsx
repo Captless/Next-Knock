@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuotes } from '@/hooks/useQuotes';
 import type { Quote } from '@/types';
-import { isActive, isOverdue, isTerminal, todayISO } from '@/lib/dashboard';
+import { isActive, isFollowUp, todayISO } from '@/lib/dashboard';
 import { quoteFilterOptions, type QuoteFilter } from '@/lib/select-options';
 import { QuoteRow } from '@/components/QuoteRow';
 import { EmptyState } from '@/components/EmptyState';
@@ -15,16 +15,14 @@ const matchesFilter = (q: Quote, filter: QuoteFilter, today: string): boolean =>
   switch (filter) {
     case 'all':
       return true;
-    case 'active':
+    case 'open':
       return isActive(q);
-    case 'follow_up':
-      return !!q.followUpDate && !isTerminal(q);
+    case 'needs_follow_up':
+      return isFollowUp(q, today);
     case 'won':
       return q.status === 'closed' && q.closedOutcome === 'won';
     case 'lost':
       return q.status === 'closed' && q.closedOutcome === 'lost';
-    case 'overdue':
-      return isOverdue(q, today);
   }
 };
 

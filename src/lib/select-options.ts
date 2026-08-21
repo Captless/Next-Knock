@@ -14,15 +14,14 @@ export const outcomeOptions = [
   { value: 'archived', label: 'Archived' },
 ] as const;
 
-export type QuoteFilter = 'all' | 'active' | 'follow_up' | 'won' | 'lost' | 'overdue';
+export type QuoteFilter = 'all' | 'open' | 'needs_follow_up' | 'won' | 'lost';
 
 export const quoteFilterOptions: Array<{ value: QuoteFilter; label: string }> = [
   { value: 'all', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'follow_up', label: 'Follow Up' },
+  { value: 'open', label: 'Open' },
+  { value: 'needs_follow_up', label: 'Needs Follow-up' },
   { value: 'won', label: 'Won' },
   { value: 'lost', label: 'Lost' },
-  { value: 'overdue', label: 'Overdue' },
 ];
 
 export const lostReasonOptions = LOST_REASONS;
