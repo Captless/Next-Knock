@@ -5,12 +5,12 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/Button';
 import { Field, Input } from '@/components/Input';
 import { Card } from '@/components/Card';
+import { ChevronRight } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 
-function ChangePassword() {
+function ChangePassword({ onDone }: { onDone: () => void }) {
   const { notify } = useToast();
-  const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -34,24 +34,16 @@ function ChangePassword() {
         newPassword: next,
       });
       notify('Password changed', 'success');
-      setOpen(false);
       setCurrent('');
       setNext('');
       setConfirm('');
+      onDone();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not change password');
     } finally {
       setSaving(false);
     }
   };
-
-  if (!open) {
-    return (
-      <Button variant="secondary" full onClick={() => setOpen(true)}>
-        Change password
-      </Button>
-    );
-  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -62,15 +54,11 @@ function ChangePassword() {
         <Input type="password" value={next} onChange={(e) => setNext(e.target.value)} />
       </Field>
       <Field label="Confirm new password">
-        <Input
-          type="password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-        />
+        <Input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
       </Field>
       {error && <p className="text-xs text-danger">{error}</p>}
       <div className="flex gap-2">
-        <Button variant="secondary" full disabled={saving} onClick={() => setOpen(false)}>
+        <Button variant="secondary" full disabled={saving} onClick={onDone}>
           Cancel
         </Button>
         <Button full disabled={saving} onClick={submit}>
@@ -83,9 +71,7 @@ function ChangePassword() {
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <h2 className="px-1 text-xs font-semibold uppercase tracking-wide text-ink-subtle">
-      {children}
-    </h2>
+    <h2 className="px-1 text-xs font-semibold tracking-wide text-ink-subtle">{children}</h2>
   );
 }
 
@@ -95,6 +81,7 @@ export function Settings() {
   const { notify } = useToast();
   const [name, setName] = useState(user?.businessName ?? '');
   const [saving, setSaving] = useState(false);
+  const [pwOpen, setPwOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -138,27 +125,45 @@ export function Settings() {
       <section className="flex flex-col gap-3">
         <SectionLabel>Account</SectionLabel>
         <Card>
-          <Field label="Business name">
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Bright Clean Co."
-            />
-          </Field>
-          <Button className="mt-3" full onClick={save} disabled={saving}>
-            {saving ? 'Saving…' : 'Save'}
-          </Button>
-        </Card>
+          <div className="flex flex-col gap-3">
+            <Field label="Business name">
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Bright Clean Co."
+              />
+            </Field>
+            <Button className="mt-1" full onClick={save} disabled={saving}>
+              {saving ? 'Saving…' : 'Save changes'}
+            </Button>
+          </div>
 
-        <Card>
-          <Field label="Email">
-            <Input value={user?.email ?? ''} readOnly disabled />
-          </Field>
-        </Card>
+          <div className="my-4 border-t border-line" />
 
-        <Card>
-          <p className="mb-3 text-sm font-medium text-ink">Change password</p>
-          <ChangePassword />
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-medium text-ink">Email</span>
+            <p className="break-words text-sm text-ink-muted">{user?.email}</p>
+          </div>
+
+          <div className="my-4 border-t border-line" />
+
+          <div className="flex flex-col gap-1">
+            {!pwOpen ? (
+              <button
+                type="button"
+                onClick={() => setPwOpen(true)}
+                className="flex min-h-[44px] w-full items-center justify-between rounded py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+              >
+                <span>
+                  <span className="block text-sm font-medium text-ink">Password</span>
+                  <span className="block text-xs text-ink-muted">Change your password</span>
+                </span>
+                <ChevronRight className="h-5 w-5 text-ink-subtle" />
+              </button>
+            ) : (
+              <ChangePassword onDone={() => setPwOpen(false)} />
+            )}
+          </div>
         </Card>
       </section>
 
@@ -168,8 +173,8 @@ export function Settings() {
           Log out
         </Button>
 
-        <div className="mt-2 rounded-lg border border-danger/40 bg-danger/5 p-4">
-          <p className="mb-1 text-sm font-semibold text-danger">Danger zone</p>
+        <div className="rounded-lg border border-danger/40 bg-danger/5 p-4">
+          <p className="mb-2 text-xs font-semibold text-danger">Danger zone</p>
           <p className="mb-3 text-xs text-ink-muted">
             Permanently delete your account and all associated quotes. This cannot be undone.
           </p>
