@@ -33,18 +33,17 @@ export function FollowUpItem({ quote }: { quote: Quote }) {
           onClick={() => navigate(`/app/quotes/${quote.id}`)}
           className="block w-full text-left"
         >
-          <div className="flex items-center justify-between gap-2">
-            <span className="truncate font-medium text-ink">{quote.customerName}</span>
-            <span className="shrink-0 font-medium text-ink">
-              {formatAmountCents(quote.amountCents)}
-            </span>
-          </div>
-          <div className="mt-0.5 text-sm text-ink-muted">{quote.phone}</div>
+          <div className="truncate font-semibold text-ink">{quote.customerName}</div>
           <div className="mt-0.5 flex items-center gap-2 text-sm text-ink-muted">
-            <span className="truncate">{SERVICE_TYPE_LABEL[quote.serviceType]}</span>
+            <span className="font-medium text-ink">{formatAmountCents(quote.amountCents)}</span>
+            <span className="truncate">{quote.phone}</span>
           </div>
-          <div className={cn('mt-1 text-xs font-medium', overdue ? 'text-danger' : 'text-warning')}>
-            {state}
+          <div className="mt-0.5 flex items-center gap-2 text-xs text-ink-subtle">
+            <span className="truncate">{SERVICE_TYPE_LABEL[quote.serviceType]}</span>
+            <span>·</span>
+            <span className={cn('font-semibold', overdue ? 'text-danger' : 'text-warning')}>
+              {state}
+            </span>
           </div>
         </button>
         <div className="flex shrink-0 gap-2">
