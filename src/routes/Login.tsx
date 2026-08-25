@@ -67,11 +67,11 @@ export function Login() {
             </button>
           </div>
         </Field>
-        <Button type="submit" full disabled={busy}>
+        <Button type="submit" full disabled={busy} className="lg:h-12">
           {busy ? 'Signing in…' : 'Log in'}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm text-ink-muted">
+      <p className="mt-4 text-center text-sm text-ink-muted lg:text-base">
         No account?{' '}
         <Link to="/signup" className="font-medium text-ink underline">
           Create one
@@ -89,15 +89,15 @@ export function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative mx-auto flex min-h-screen max-w-md flex-col justify-center bg-bg px-6 safe-top safe-bottom">
+    <div className="relative mx-auto flex min-h-screen max-w-md flex-col justify-center bg-bg px-6 safe-top safe-bottom sm:max-w-md sm:px-8 lg:max-w-lg lg:px-0">
       <Link to="/" className="absolute left-6 top-6 inline-flex items-center gap-1 text-sm text-ink-muted transition-colors hover:text-ink">
         &larr; Back to home
       </Link>
       <div className="mb-8">
-        <img src="/logo-icon.svg" alt="Next Knock" className="h-10 w-10" />
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink">Next Knock</h1>
+        <img src="/logo-icon.svg" alt="Next Knock" className="h-10 w-10 lg:h-12 lg:w-12" />
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink lg:text-3xl">Next Knock</h1>
       </div>
-      <h2 className="mb-4 text-lg font-semibold text-ink">{title}</h2>
+      <h2 className="mb-4 text-lg font-semibold text-ink lg:mb-6 lg:text-xl">{title}</h2>
       {children}
     </div>
   );
