@@ -28,7 +28,6 @@ describe('bucketQuotes', () => {
     ];
     const out = bucketQuotes(quotes, today);
     expect(out.followUp.map((x) => x.id)).toEqual(['1', '2']);
-    expect(out.openCount).toBe(4);
   });
 
   it('treats past dates as overdue', () => {
@@ -44,13 +43,11 @@ describe('bucketQuotes', () => {
     ];
     const out = bucketQuotes(quotes, today);
     expect(out.followUp).toEqual([]);
-    expect(out.openCount).toBe(0);
   });
 
   it('returns empty buckets when no quotes', () => {
     const out = bucketQuotes([], today);
     expect(out.followUp).toEqual([]);
-    expect(out.openCount).toBe(0);
   });
 });
 

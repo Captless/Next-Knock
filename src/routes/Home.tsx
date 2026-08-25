@@ -1,17 +1,49 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuotes } from '@/hooks/useQuotes';
 import { bucketQuotes, todayISO } from '@/lib/dashboard';
+import { formatAmountCents } from '@/lib/quote-schema';
 import { FollowUpItem } from '@/components/FollowUpItem';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/Button';
-import { PlusIcon, ChevronRight } from '@/components/Icon';
+import { PlusIcon } from '@/components/Icon';
+
+function SummaryCard({
+  label,
+  count,
+  detail,
+  to,
+}: {
+  label: string;
+  count: number;
+  detail?: string;
+  to: string;
+}) {
+  const navigate = useNavigate();
+  return (
+    <button
+      onClick={() => navigate(to)}
+      className="flex flex-col rounded-lg border border-line bg-surface p-4 text-left shadow-card transition-colors hover:bg-bg active:bg-line/40"
+    >
+      <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">{label}</span>
+      <span className="mt-1 text-3xl font-semibold tracking-tight text-ink">{count}</span>
+      {detail && <span className="mt-1 text-sm text-ink-muted">{detail}</span>}
+    </button>
+  );
+}
 
 export function Home() {
   const { quotes, loading, error } = useQuotes();
   const navigate = useNavigate();
   const today = todayISO();
-  const { followUp, openCount } = bucketQuotes(quotes, today);
+  const { followUp } = bucketQuotes(quotes, today);
+
+  const won = quotes.filter((q) => q.status === 'closed' && q.closedOutcome === 'won');
+  const lost = quotes.filter((q) => q.status === 'closed' && q.closedOutcome === 'lost');
+  const wonCount = won.length;
+  const wonValue = won.reduce((sum, q) => sum + q.amountCents, 0);
+  const lostCount = lost.length;
+  const lostValue = lost.reduce((sum, q) => sum + q.amountCents, 0);
 
   if (error && !loading) {
     return (
@@ -41,72 +73,45 @@ export function Home() {
             description="Create your first quote to start tracking your follow-ups."
           />
         )
-      ) : quotes.length > 0 && followUp.length > 0 ? (
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
-          <section className="flex flex-col gap-6">
+      ) : (
+        <>
+          <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <SummaryCard
+              label="Needs Follow-up"
+              count={followUp.length}
+              to="/app/quotes?filter=needs_follow_up"
+            />
+            <SummaryCard
+              label="Won"
+              count={wonCount}
+              detail={`${formatAmountCents(wonValue)} estimated value`}
+              to="/app/quotes?filter=won"
+            />
+            <SummaryCard
+              label="Lost"
+              count={lostCount}
+              detail={`${formatAmountCents(lostValue)} potential value lost`}
+              to="/app/quotes?filter=lost"
+            />
+          </section>
+
+          <section className="flex flex-col gap-2">
             <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
               Needs Follow-up
             </h2>
-            <div className="flex flex-col gap-2">
-              {followUp.slice(0, 3).map((q) => (
-                <FollowUpItem key={q.id} quote={q} />
-              ))}
-            </div>
-          </section>
-
-          <aside className="flex flex-col gap-4">
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-              Open Quotes
-            </h2>
-            <button
-              onClick={() => navigate('/app/quotes?filter=open')}
-              className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
-            >
-              <div className="min-w-0 flex-1">
-                <div className="text-2xl font-semibold">{openCount}</div>
-                <div className="text-sm text-white/80">Open quotes</div>
-                <div className="mt-1 text-xs text-white/70">
-                  Quotes that don't need follow-up today
-                </div>
-              </div>
-              <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
-            </button>
-          </aside>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-6">
-          {followUp.length > 0 && (
-            <section>
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-                Needs Follow-up
-              </h2>
+            {followUp.length > 0 ? (
               <div className="flex flex-col gap-2">
                 {followUp.slice(0, 3).map((q) => (
                   <FollowUpItem key={q.id} quote={q} />
                 ))}
               </div>
-            </section>
-          )}
-
-          <section>
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-              Open Quotes
-            </h2>
-            <button
-              onClick={() => navigate('/app/quotes?filter=open')}
-              className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
-            >
-              <div className="min-w-0 flex-1">
-                <div className="text-2xl font-semibold">{openCount}</div>
-                <div className="text-sm text-white/80">Open quotes</div>
-                <div className="mt-1 text-xs text-white/70">
-                  Quotes that don't need follow-up today
-                </div>
-              </div>
-              <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
-            </button>
+            ) : (
+              <p className="text-sm text-ink-muted">
+                Nothing needs follow-up right now.
+              </p>
+            )}
           </section>
-        </div>
+        </>
       )}
     </div>
   );
