@@ -12,6 +12,7 @@ import { Quotes } from '@/routes/Quotes';
 import { QuoteDetail } from '@/routes/QuoteDetail';
 import { QuoteForm } from '@/routes/QuoteForm';
 import { Settings } from '@/routes/Settings';
+import { Landing } from '@/routes/Landing';
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -23,6 +24,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route
@@ -85,8 +87,7 @@ function AppRoutes() {
           </RequireAuth>
         }
       />
-      <Route path="*" element={<Navigate to="/app" replace />} />
-    </Routes>
+      <Route path="*" element={<Navigate to="/" replace />} />    </Routes>
   );
 }
 
