@@ -13,11 +13,10 @@ export const outcomeOptions = [
   { value: 'archived', label: 'Archived' },
 ] as const;
 
-export type QuoteFilter = 'all' | 'open' | 'needs_follow_up' | 'won' | 'lost';
+export type QuoteFilter = 'all' | 'needs_follow_up' | 'won' | 'lost';
 
 export const quoteFilterOptions: Array<{ value: QuoteFilter; label: string }> = [
   { value: 'all', label: 'All' },
-  { value: 'open', label: 'Open' },
   { value: 'needs_follow_up', label: 'Needs Follow-up' },
   { value: 'won', label: 'Won' },
   { value: 'lost', label: 'Lost' },
