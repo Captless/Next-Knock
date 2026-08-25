@@ -179,28 +179,29 @@ export function QuoteDetail() {
         </div>
       </div>
 
-      <aside className="flex flex-col gap-4 lg:sticky lg:top-6 lg:self-start">
+      <aside className="flex flex-col gap-3 lg:sticky lg:top-6 lg:self-start">
         {!terminal && !isLost && (
           <>
-            {quote.status === 'draft' && (
-              <div>
-                <Button full onClick={sendQuote}>
-                  <SendIcon className="h-5 w-5" /> Send quote
-                </Button>
-              </div>
-            )}
-
-            <div>
+            <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
               <FollowUpControl quote={quote} onSet={onFollowUp} />
             </div>
 
-            <div className="flex gap-2">
-              <Button variant="secondary" full onClick={markWon}>
-                <CheckIcon className="h-5 w-5" /> Mark Won
-              </Button>
-              <Button variant="secondary" full onClick={() => setLostOpen(true)}>
-                Mark Lost
-              </Button>
+            <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+              <p className="mb-3 text-sm font-medium text-ink">Actions</p>
+              {quote.status === 'draft' ? (
+                <Button full onClick={sendQuote}>
+                  <SendIcon className="h-5 w-5" /> Send quote
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button variant="secondary" full onClick={markWon}>
+                    <CheckIcon className="h-5 w-5" /> Won
+                  </Button>
+                  <Button variant="secondary" full onClick={() => setLostOpen(true)}>
+                    Lost
+                  </Button>
+                </div>
+              )}
             </div>
           </>
         )}

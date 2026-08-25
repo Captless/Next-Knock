@@ -44,7 +44,7 @@ export function FollowUpControl({
   }
 
   return (
-    <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+    <div>
       <p className="mb-1 text-sm font-medium text-ink">Follow-up</p>
       <p className={cn('text-sm', stateTone)}>{stateLabel}</p>
 
