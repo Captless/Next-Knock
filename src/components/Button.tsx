@@ -36,8 +36,8 @@ export function Button({
     <button
       className={cn(
         'inline-flex items-center justify-center gap-2 rounded font-medium',
-        'transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
-        'tap select-none',
+        'transition-[colors,transform] disabled:opacity-50 disabled:cursor-not-allowed',
+        'active:scale-[0.98] tap select-none',
         variantStyles[variant],
         sizeStyles[size],
         full && 'w-full',

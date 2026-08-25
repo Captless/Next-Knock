@@ -36,6 +36,13 @@
   .safe-top {
     padding-top: env(safe-area-inset-top);
   }
+
+  /* Editorial display type: reuses the existing Inter family with tighter
+     tracking + heavier weight for landing headings (no new font dependency). */
+  .font-display {
+    font-family: theme('fontFamily.sans');
+    letter-spacing: -0.02em;
+  }
 }
 
 @keyframes fadeIn {
@@ -64,8 +71,29 @@
   animation: fadeInUp 0.5s ease-out both;
 }
 
+/* Radius scale (consistency lock): buttons 8px / cards & frames 16px / pills full.
+   Desktop hover only: subtle elevation, no scale drama, never clickable-looking.
+   Shadow is warm-tinted to match the warm bg (#FAFAF9) instead of pure black. */
+.hero-visual {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+@media (hover: hover) {
+  .hero-visual:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 10px 30px rgba(60, 50, 40, 0.1),
+      0 2px 8px rgba(60, 50, 40, 0.06);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
+  }
+  .hero-visual {
+    transition: none;
   }
 }
