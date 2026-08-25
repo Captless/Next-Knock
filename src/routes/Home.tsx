@@ -25,7 +25,12 @@ export function Home() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-ink">Home</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">Home</h1>
+        <Button variant="primary" size="md" onClick={() => navigate('/app/quotes/new')}>
+          <PlusIcon className="h-5 w-5" /> New Quote
+        </Button>
+      </div>
 
       {quotes.length === 0 ? (
         loading ? (
@@ -34,17 +39,44 @@ export function Home() {
           <EmptyState
             title="No quotes yet"
             description="Create your first quote to start tracking your follow-ups."
-            action={
-              <Button onClick={() => navigate('/app/quotes/new')}>
-                <PlusIcon className="h-5 w-5" /> New quote
-              </Button>
-            }
           />
         )
+      ) : quotes.length > 0 && followUp.length > 0 ? (
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
+          <section className="flex flex-col gap-6">
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+              Needs Follow-up
+            </h2>
+            <div className="flex flex-col gap-2">
+              {followUp.slice(0, 3).map((q) => (
+                <FollowUpItem key={q.id} quote={q} />
+              ))}
+            </div>
+          </section>
+
+          <aside className="flex flex-col gap-4">
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+              Open Quotes
+            </h2>
+            <button
+              onClick={() => navigate('/app/quotes?filter=open')}
+              className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="text-2xl font-semibold">{openCount}</div>
+                <div className="text-sm text-white/80">Open quotes</div>
+                <div className="mt-1 text-xs text-white/70">
+                  Quotes that don't need follow-up today
+                </div>
+              </div>
+              <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
+            </button>
+          </aside>
+        </div>
       ) : (
-        quotes.length > 0 && followUp.length > 0 ? (
-          <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
-            <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
+          {followUp.length > 0 && (
+            <section>
               <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
                 Needs Follow-up
               </h2>
@@ -54,69 +86,27 @@ export function Home() {
                 ))}
               </div>
             </section>
+          )}
 
-            <aside className="flex flex-col gap-4">
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-                Open Quotes
-              </h2>
-              <button
-                onClick={() => navigate('/app/quotes?filter=open')}
-                className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="text-2xl font-semibold">{openCount}</div>
-                  <div className="text-sm text-white/80">Open quotes</div>
-                  <div className="mt-1 text-xs text-white/70">
-                    Quotes that don't need follow-up today
-                  </div>
+          <section>
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+              Open Quotes
+            </h2>
+            <button
+              onClick={() => navigate('/app/quotes?filter=open')}
+              className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="text-2xl font-semibold">{openCount}</div>
+                <div className="text-sm text-white/80">Open quotes</div>
+                <div className="mt-1 text-xs text-white/70">
+                  Quotes that don't need follow-up today
                 </div>
-                <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
-              </button>
-
-              <Button full onClick={() => navigate('/app/quotes/new')}>
-                <PlusIcon className="h-5 w-5" /> New quote
-              </Button>
-            </aside>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            {followUp.length > 0 && (
-              <section>
-                <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-                  Needs Follow-up
-                </h2>
-                <div className="flex flex-col gap-2">
-                  {followUp.slice(0, 3).map((q) => (
-                    <FollowUpItem key={q.id} quote={q} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            <section>
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
-                Open Quotes
-              </h2>
-              <button
-                onClick={() => navigate('/app/quotes?filter=open')}
-                className="flex w-full items-center gap-3 rounded-lg border border-line bg-ink p-4 text-left text-white transition-colors hover:bg-ink/90 active:bg-ink/80"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="text-2xl font-semibold">{openCount}</div>
-                  <div className="text-sm text-white/80">Open quotes</div>
-                  <div className="mt-1 text-xs text-white/70">
-                    Quotes that don't need follow-up today
-                  </div>
-                </div>
-                <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
-              </button>
-            </section>
-
-            <Button full onClick={() => navigate('/app/quotes/new')}>
-              <PlusIcon className="h-5 w-5" /> New quote
-            </Button>
-          </div>
-        )
+              </div>
+              <ChevronRight className="h-6 w-6 shrink-0 text-white/70" />
+            </button>
+          </section>
+        </div>
       )}
     </div>
   );

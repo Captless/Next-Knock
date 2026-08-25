@@ -1,0 +1,79 @@
+﻿node.exe : Γû▓ [WARNING] Duplicate key "build" in object literal [duplicate-object-key]
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Γû▓ [WARNING] D...ate-object-key]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+    package.json:13:4:
+      13 Γöé     "build": "node scripts/generate-icons.mjs && tsc -b && vite bu...
+         Γò╡     ~~~~~~~
+
+  The original key "build" is here:
+
+    package.json:8:4:
+      8 Γöé     "build": "tsc -b && vite build",
+        Γò╡     ~~~~~~~
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/User/Documents/Projects/Next Knock[39m
+
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mauthentication bypass[2m > [22mrejects missing token
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mauthentication bypass[2m > [22mrejects forged/tampered token
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mauthentication bypass[2m > [22mrejects token signed with wrong secret
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mauthentication bypass[2m > [22mrejects expired token
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mauthentication bypass[2m > [22mrequireUserId resolves only with valid signature
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mcross-user data isolation[2m > [22mgetQuote always scopes by user_id
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mcross-user data isolation[2m > [22mdeleteQuote always scopes by user_id
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mcross-user data isolation[2m > [22mupdateQuote ignores ownership fields from request body
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mSQL injection parameterization[2m > [22muser input is bound, not interpolated
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects oversized notes
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects invalid service type
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects invalid status
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects negative amount
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects malformed email
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mmalicious / invalid input[2m > [22mrejects empty customer name
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mCSRF / session cookie hygiene[2m > [22mcookie is HttpOnly + SameSite=Lax
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22mCSRF / session cookie hygiene[2m > [22mcookie is Secure only over https
+ [32mΓ£ô[39m src/test/security.test.ts[2m > [22msecret exposure[2m > [22msession token is not the raw secret
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mnormalizeNewQuote[2m > [22msets won outcome when closing without outcome
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mnormalizeNewQuote[2m > [22msets default follow-up when sent without date
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mnormalizeNewQuote[2m > [22mkeeps provided follow-up when sent
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mnormalizePatch[2m > [22mclears outcome when leaving closed
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mnormalizePatch[2m > [22mdefaults outcome when moving to closed
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mquote validation[2m > [22mrejects empty customer name
+ [32mΓ£ô[39m src/test/quote-logic.test.ts[2m > [22mquote validation[2m > [22maccepts valid quote
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mD1 ownership + queries[2m > [22mlistQuotes filters by user_id
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mD1 ownership + queries[2m > [22mgetQuote binds id and user_id (cross-user isolation)
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mD1 ownership + queries[2m > [22mcreateQuote inserts ownership + normalized fields
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mD1 ownership + queries[2m > [22mupdateQuote enforces WHERE id + user_id
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mD1 ownership + queries[2m > [22mdeleteQuote enforces WHERE id + user_id
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mvalidateQuoteInput[2m > [22mrejects bad data
+ [32mΓ£ô[39m src/test/quotes-db.test.ts[2m > [22mvalidateQuoteInput[2m > [22maccepts valid input
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22mpassword hashing[2m > [22mhash verifies[33m 884[2mms[22m[39m
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msignup[2m > [22mrejects short password
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msignup[2m > [22mrejects invalid email
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msession[2m > [22mcreate + verify roundtrip
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msession[2m > [22mverify rejects wrong secret
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msession[2m > [22mverify rejects null
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msession[2m > [22mrequireUserId throws on missing token
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22msession[2m > [22mrequireUserId resolves from cookie
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22mcookie helpers[2m > [22msessionCookie is HttpOnly and Secure when https
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22mcookie helpers[2m > [22msessionCookie omits Secure on http
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22mcookie helpers[2m > [22msessionTokenFromRequest parses
+ [32mΓ£ô[39m src/test/auth.test.ts[2m > [22mlogin[2m > [22mrejects unknown user
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mbucketQuotes[2m > [22mseparates due today and open count correctly
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mbucketQuotes[2m > [22mtreats past dates as overdue
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mbucketQuotes[2m > [22mexcludes won/lost from follow-up and open count
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mbucketQuotes[2m > [22mreturns empty buckets when no quotes
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mdefaultFollowUpDate[2m > [22mreturns +3 days
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mmoney[2m > [22mformats cents to USD
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mmoney[2m > [22mparses dollars to cents
+ [32mΓ£ô[39m src/test/dashboard.test.ts[2m > [22mtodayISO[2m > [22mreturns YYYY-MM-DD
+
+[2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[32m52 passed[39m[22m[90m (52)[39m
+[2m   Start at [22m 16:48:37
+[2m   Duration [22m 1.66s[2m (transform 231ms, setup 784ms, collect 457ms, tests 957ms, environment 2.76s, prepare 795ms)[22m
+

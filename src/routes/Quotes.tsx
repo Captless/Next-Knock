@@ -69,7 +69,12 @@ export function Quotes() {
 
   return (
     <div>
-      <h1 className="mb-3 text-2xl font-semibold tracking-tight text-ink">Quotes</h1>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">Quotes</h1>
+        <Button variant="primary" size="md" onClick={() => navigate('/app/quotes/new')}>
+          <PlusIcon className="h-5 w-5" /> New Quote
+        </Button>
+      </div>
 
       {error && !loading ? (
         <ErrorState title="Couldn't load quotes" message={error} />
@@ -132,13 +137,6 @@ export function Quotes() {
         </>
       )}
 
-      <Button
-        full
-        className="fixed inset-x-0 bottom-20 z-30 mx-auto max-w-md lg:hidden"
-        onClick={() => navigate('/app/quotes/new')}
-      >
-        <PlusIcon className="h-5 w-5" /> New quote
-      </Button>
     </div>
   );
 }
