@@ -7,6 +7,17 @@ export const formatDate = (iso: string | undefined): string => {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
+export const formatLastEdited = (iso: string): string => {
+  const d = new Date(iso);
+  const t = new Date();
+  t.setHours(0, 0, 0, 0);
+  const today = d.toDateString() === t.toDateString();
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  return today
+    ? `Today, ${time}`
+    : `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${time}`;
+};
+
 export const todayISO = (): string => {
   const d = new Date();
   d.setHours(0, 0, 0, 0);

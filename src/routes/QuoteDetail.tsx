@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuotes } from '@/hooks/useQuotes';
-import type { QuoteActivity } from '@/types';
 import { LOST_REASONS } from '@/types';
 import { Badge } from '@/components/Badge';
 import { statusTone, outcomeTone } from '@/lib/tones';
@@ -11,12 +10,11 @@ import {
   CLOSED_OUTCOME_LABEL,
 } from '@/types';
 import { formatAmountCents } from '@/lib/quote-schema';
-import { formatDate } from '@/lib/dashboard';
+import { formatDate, formatLastEdited } from '@/lib/dashboard';
 import { Button } from '@/components/Button';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { ErrorState } from '@/components/ErrorState';
 import { FollowUpControl } from '@/components/FollowUpControl';
-import { ActivityHistory } from '@/components/ActivityHistory';
 import { useToast } from '@/components/Toast';
 import {
   PhoneIcon,
@@ -42,26 +40,11 @@ export function QuoteDetail() {
   const { quotes, updateQuote, removeQuote } = useQuotes();
   const navigate = useNavigate();
   const { notify } = useToast();
-  const [activity, setActivity] = useState<QuoteActivity[]>([]);
   const [confirm, setConfirm] = useState(false);
   const [lostOpen, setLostOpen] = useState(false);
   const [lostReason, setLostReason] = useState('');
 
   const quote = quotes.find((q) => q.id === id);
-
-  useEffect(() => {
-    if (!id) return;
-    let cancelled = false;
-    fetch(`/api/quotes/${id}`, { credentials: 'include' })
-      .then((r) => r.json())
-      .then((d) => {
-        if (!cancelled && Array.isArray(d.activity)) setActivity(d.activity);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [id, quote?.updatedAt]);
 
   if (!quote) {
     return (
@@ -191,11 +174,8 @@ export function QuoteDetail() {
             value={quote.followUpDate ? formatDate(quote.followUpDate) : '—'}
           />
           {quote.notes && <Row label="Notes" value={quote.notes} />}
-          <Row label="Created" value={formatDate(quote.createdAt)} />
-        </div>
-
-        <div className="mb-4 lg:hidden">
-          <ActivityHistory activity={activity} />
+          <Row label="Created" value={formatLastEdited(quote.createdAt)} />
+          <Row label="Last edited" value={formatLastEdited(quote.updatedAt)} />
         </div>
       </div>
 
@@ -232,10 +212,6 @@ export function QuoteDetail() {
             </p>
           </div>
         ) : null}
-
-        <div className="hidden lg:block">
-          <ActivityHistory activity={activity} />
-        </div>
 
         <Button
           variant="ghost"
