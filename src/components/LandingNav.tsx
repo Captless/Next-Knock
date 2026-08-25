@@ -12,12 +12,12 @@ export function LandingNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+        <a href="/" className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-ink text-sm font-bold text-accentInk">
             N
           </span>
           <span className="text-base font-semibold tracking-tight text-ink">Next Knock</span>
-        </Link>
+        </a>
         <nav className="hidden items-center gap-7 md:flex">
           {navLinks.map((l) => (
             <a

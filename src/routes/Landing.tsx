@@ -77,7 +77,7 @@ const benefits = [
 const faqs = [
   {
     q: 'How do I keep track of cleaning quotes?',
-    a: 'Next Knock keeps every quote in one simple list — customer, service, amount, and status — so you always know what is outstanding without spreadsheets or sticky notes.',
+    a: 'Next Knock keeps every quote in one simple list (customer, service, amount, and status) so you always know what is outstanding without spreadsheets or sticky notes.',
   },
   {
     q: 'What is the best way to follow up with cleaning customers?',
@@ -89,7 +89,7 @@ const faqs = [
   },
   {
     q: 'How much does quote tracking software cost?',
-    a: 'Next Knock is a one-time purchase of $19.99. There are no monthly subscriptions and no recurring fees — you pay once and keep using it.',
+    a: 'Next Knock is a one-time purchase of $19.99. There are no monthly subscriptions and no recurring fees. You pay once and keep using it.',
   },
   {
     q: 'Does Next Knock work without a computer?',
