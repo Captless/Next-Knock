@@ -93,3 +93,19 @@ export const SendIcon = (p: P) => (
     <path d="M22 2 15 22l-4-9-9-4 20-7z" />
   </svg>
 );
+
+export const EyeIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+export const EyeOffIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M9.9 4.2A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a13.2 13.2 0 0 1-2.2 2.8" />
+    <path d="M6.1 6.1A13.2 13.2 0 0 0 2 12s3.5 7 10 7a10.9 10.9 0 0 0 4.5-.9" />
+    <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+    <path d="M3 3l18 18" />
+  </svg>
+);

@@ -25,7 +25,7 @@ export function Input({ className, ...rest }: InputProps) {
   return (
     <input
       className={cn(
-        'h-11 rounded border border-line bg-surface px-3 text-base text-ink',
+        'h-11 w-full rounded border border-line bg-surface px-3 text-base text-ink',
         'placeholder:text-ink-subtle',
         'focus:border-ink focus:outline-none',
         className,
