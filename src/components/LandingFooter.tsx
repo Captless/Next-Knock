@@ -23,9 +23,7 @@ export function LandingFooter() {
           {/* Brand */}
           <div className="max-w-xs">
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-ink text-sm font-bold text-accentInk">
-                N
-              </span>
+              <img src="/logo-wordmark.svg" alt="Next Knock" className="h-7 w-auto" />
               <span className="font-display text-base font-semibold text-ink">Next Knock</span>
             </div>
             <p className="mt-3 text-sm text-ink-muted">

@@ -78,9 +78,13 @@ export function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center bg-bg px-6 safe-top safe-bottom">
+    <div className="relative mx-auto flex min-h-screen max-w-md flex-col justify-center bg-bg px-6 safe-top safe-bottom">
+      <Link to="/" className="absolute left-6 top-6 inline-flex items-center gap-1 text-sm text-ink-muted transition-colors hover:text-ink">
+        &larr; Back to home
+      </Link>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Next Knock</h1>
+        <img src="/logo-icon.svg" alt="Next Knock" className="h-10 w-10" />
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink">Next Knock</h1>
         <p className="mt-1 text-sm text-ink-muted">{subtitle}</p>
       </div>
       <h2 className="mb-4 text-lg font-semibold text-ink">{title}</h2>

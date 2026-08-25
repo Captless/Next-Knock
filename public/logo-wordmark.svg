@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="290" viewBox="80 100 1360 290">
+  <path d="M150 150 L150 362 L255 362 L255 150 Q255 130 235 130 L170 130 Q150 130 150 150 Z" fill="#0A0A0A"/>
+  <circle cx="200" cy="246" r="14" fill="#FFFFFF"/>
+  <path d="M272 168 L272 344 L408 256 Z" fill="#0A0A0A"/>
+  <text x="556" y="312" font-family="Inter, Arial, sans-serif" font-size="148" font-weight="700" letter-spacing="-2" fill="#0A0A0A">Next Knock</text>
+</svg>

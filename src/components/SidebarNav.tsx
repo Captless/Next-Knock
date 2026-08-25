@@ -12,9 +12,12 @@ export function SidebarNav({ businessName }: { businessName: string }) {
   return (
     <nav className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
       <div className="border-b border-line px-4 py-3">
-        <p className="text-[11px] font-medium uppercase tracking-wide text-ink-subtle">
-          Next Knock
-        </p>
+        <div className="flex items-center gap-2">
+          <img src="/logo-icon.svg" alt="" className="h-5 w-5" />
+          <p className="text-[11px] font-medium uppercase tracking-wide text-ink-subtle">
+            Next Knock
+          </p>
+        </div>
         <h1 className="truncate text-base font-semibold text-ink">{businessName}</h1>
       </div>
       <div className="flex flex-col gap-1 p-4">
