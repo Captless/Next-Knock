@@ -12,7 +12,6 @@ import {
   CheckIcon,
   PlusIcon,
   ListIcon,
-  ChevronRight,
 } from '@/components/Icon';
 
 /** Blank product frame. No fabricated UI — real screenshot inserted later. */
@@ -77,28 +76,28 @@ const benefits = [
 
 const faqs = [
   {
-    q: 'What is Next Knock?',
-    a: 'Next Knock is a focused tool that helps cleaning-business owners track quotes and follow up before good opportunities disappear.',
+    q: 'How do I keep track of cleaning quotes?',
+    a: 'Next Knock keeps every quote in one simple list — customer, service, amount, and status — so you always know what is outstanding without spreadsheets or sticky notes.',
   },
   {
-    q: 'Who is it for?',
-    a: 'Cleaning-business owners and operators who want a simple way to track quotes and follow up while moving between jobs.',
+    q: 'What is the best way to follow up with cleaning customers?',
+    a: 'Next Knock sets a follow-up date automatically and shows you who needs a follow-up today, with tap-to-call and tap-to-message so you can reach the customer in one tap.',
   },
   {
-    q: 'Is it a CRM?',
-    a: 'No. Next Knock is a focused quote and follow-up tool, not a CRM, accounting, or scheduling platform.',
+    q: 'Do I need a CRM for my cleaning business?',
+    a: 'Not necessarily. Next Knock is a focused quote and follow-up tool, not a full CRM, so it covers tracking and follow-ups without the complexity or cost of CRM software.',
   },
   {
-    q: 'How does payment work?',
-    a: 'Next Knock is a one-time purchase. Pricing is confirmed at checkout — there are no subscriptions.',
+    q: 'How much does quote tracking software cost?',
+    a: 'Next Knock is a one-time purchase of $19.99. There are no monthly subscriptions and no recurring fees — you pay once and keep using it.',
   },
   {
-    q: 'Do I need a computer?',
-    a: 'No. Next Knock is built mobile-first and works in your phone browser. It can also be installed like an app.',
+    q: 'Does Next Knock work without a computer?',
+    a: 'Yes. Next Knock is built mobile-first and runs in your phone browser. It can also be installed on your phone like an app.',
   },
   {
-    q: 'Is my data private?',
-    a: 'Yes. Your quotes and customer information stay tied to your account and are never shared.',
+    q: 'Who can see my quotes and customer information?',
+    a: 'Only you. Your quotes and customer information stay tied to your account and are never shared.',
   },
 ];
 
@@ -113,8 +112,22 @@ export function Landing() {
     return <Navigate to="/app" replace />;
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-bg">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <LandingNav />
 
       <main>
@@ -122,7 +135,8 @@ export function Landing() {
         <section className="mx-auto max-w-5xl px-4 pb-14 pt-12 sm:pt-20">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
             <div className="flex animate-fade-up flex-col items-start">
-              <p className="mb-4 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-ink-muted">
+              <p className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/5 px-3 py-1 text-xs font-medium text-success">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" />
                 For cleaning-business owners
               </p>
               <h1 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl lg:text-6xl">
@@ -158,15 +172,29 @@ export function Landing() {
         {/* Problem — vertical editorial statement */}
         <section id="problem" className="border-t border-line py-16 sm:py-24">
           <Reveal className="mx-auto max-w-3xl px-4">
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
               Quotes are lost not when they are created, but when follow-up is
               forgotten.
             </h2>
-            <p className="mt-4 text-base text-ink-muted sm:text-lg">
+            <p className="mt-5 text-base text-ink-muted sm:text-lg">
               Cleaning businesses lose potential work because quotes are never
               tracked and prospects are never followed up with at the right time. A
               good lead goes cold, and the job goes to someone else.
             </p>
+            <ul className="mt-6 flex flex-col gap-2 text-sm text-ink">
+              <li className="flex items-center gap-2">
+                <span className="text-success">&rarr;</span>
+                A quote goes out. Days pass.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-success">&rarr;</span>
+                You meant to check back. You didn't.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-success">&rarr;</span>
+                The customer books someone who did.
+              </li>
+            </ul>
           </Reveal>
         </section>
 
@@ -212,25 +240,22 @@ export function Landing() {
                 Three steps, done from your phone
               </h2>
             </div>
-            <ol className="mt-10 grid gap-6 sm:grid-cols-3">
-              {steps.map((s, i) => (
-                <li
-                  key={s.n}
-                  className="relative rounded-xl border border-line bg-bg p-6"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-3xl font-semibold text-line">
-                      {s.n}
-                    </span>
-                    {i < steps.length - 1 && (
-                      <ChevronRight className="hidden h-5 w-5 text-ink-subtle sm:block" />
-                    )}
-                  </div>
-                  <div className="mb-3 mt-3 flex h-10 w-10 items-center justify-center rounded-lg bg-ink text-accentInk">
-                    <s.Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="font-display text-lg font-semibold text-ink">{s.title}</h3>
-                  <p className="mt-1 text-sm text-ink-muted">{s.body}</p>
+            <ol className="relative mt-12 grid gap-10 sm:grid-cols-3 sm:gap-6">
+              <span
+                aria-hidden
+                className="absolute left-[16%] right-[16%] top-7 hidden h-px bg-success/30 sm:block"
+              />
+              {steps.map((s) => (
+                <li key={s.n} className="relative flex flex-col items-center text-center">
+                  <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-accentInk shadow-card">
+                    <s.Icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mt-5 font-display text-lg font-semibold text-ink">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 max-w-xs text-sm leading-relaxed text-ink-muted">
+                    {s.body}
+                  </p>
                 </li>
               ))}
             </ol>
@@ -248,7 +273,7 @@ export function Landing() {
             <div className="mt-8 grid gap-x-10 gap-y-0 sm:grid-cols-2">
               {benefits.map((b) => (
                 <div key={b.title} className="flex gap-3 border-b border-line py-5">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-line/40 text-ink">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">
                     <b.Icon className="h-5 w-5" />
                   </div>
                   <div>
@@ -272,27 +297,77 @@ export function Landing() {
               </h2>
             </div>
             <div className="mx-auto mt-8 max-w-md">
-              <div className="rounded-xl border border-line bg-bg p-6 text-center shadow-card">
-                <p className="text-sm text-ink-muted">One-time purchase</p>
-                <p className="font-display mt-2 text-4xl font-semibold tracking-tight text-ink">
-                  $19.99
-                </p>
-                <p className="mt-2 text-sm text-ink-muted">
-                  No subscription. Pay once and keep using Next Knock.
-                </p>
-                <Button
-                  size="lg"
-                  className="mt-5 w-full"
-                  onClick={() => {
-                    trackEvent('cta_pricing');
-                    window.location.href = '/signup';
-                  }}
+              <div className="relative overflow-hidden rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+                {/* Decorative curved line accent behind the price */}
+                <svg
+                  className="pointer-events-none absolute inset-x-0 top-6 mx-auto h-24 w-64 text-line"
+                  viewBox="0 0 256 96"
+                  fill="none"
+                  aria-hidden
                 >
-                  Get started
-                </Button>
-                <p className="mt-3 text-xs text-ink-subtle">
-                  Final price confirmed at checkout.
-                </p>
+                  <path
+                    d="M8 72 C 64 16 192 16 248 72"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M40 84 C 96 40 160 40 216 84"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    strokeLinecap="round"
+                    opacity="0.5"
+                  />
+                </svg>
+
+                <div className="relative z-10">
+                  <span className="inline-block rounded-full bg-success/15 px-3 py-1 text-xs font-medium text-success">
+                    Pay once. Yours forever.
+                  </span>
+                  <div className="mt-6 flex items-end justify-center gap-1">
+                    <span className="mb-2 text-2xl font-semibold text-success">$</span>
+                    <span className="gradient-text font-display text-7xl font-semibold tracking-tight">
+                      19.99
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-ink-muted">
+                    One-time purchase. No subscription.
+                  </p>
+
+                  <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
+                    {[
+                      'Unlimited quotes',
+                      'Automatic follow-up dates',
+                      'Know who needs follow-up today',
+                      'Tap-to-call & tap-to-message',
+                      'Won / lost outcome tracking',
+                      'Installable app on your phone',
+                    ].map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm text-ink">
+                        <CheckIcon className="h-4 w-4 shrink-0 text-success" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Button
+                    size="lg"
+                    variant="primary"
+                    full
+                    onClick={() => {
+                      trackEvent('cta_pricing');
+                      window.location.href = '/signup';
+                    }}
+                  >
+                    Get started
+                  </Button>
+                  <p className="mt-3 text-sm font-medium text-success">
+                    30-day money-back guarantee
+                  </p>
+                  <p className="mt-1 text-xs text-ink-subtle">
+                    No credit card required · Final price confirmed at checkout.
+                  </p>
+                </div>
               </div>
             </div>
           </Reveal>
@@ -303,7 +378,7 @@ export function Landing() {
           <Reveal className="mx-auto max-w-3xl px-4">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                Common questions
+                 FAQ
               </h2>
             </div>
             <div className="mt-8 flex flex-col gap-3">

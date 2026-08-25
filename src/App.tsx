@@ -13,6 +13,10 @@ import { QuoteDetail } from '@/routes/QuoteDetail';
 import { QuoteForm } from '@/routes/QuoteForm';
 import { Settings } from '@/routes/Settings';
 import { Landing } from '@/routes/Landing';
+import { About } from '@/routes/About';
+import { Contact } from '@/routes/Contact';
+import { Privacy } from '@/routes/Privacy';
+import { Terms } from '@/routes/Terms';
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -27,6 +31,10 @@ function AppRoutes() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
       <Route
         path="/app"
         element={
