@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns';
 import type { Quote } from './types';
 
 export const formatDate = (iso: string | undefined): string => {
@@ -18,17 +19,10 @@ export const formatLastEdited = (iso: string): string => {
     : `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${time}`;
 };
 
-export const todayISO = (): string => {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d.toISOString().slice(0, 10);
-};
+export const todayISO = (): string => format(new Date(), 'yyyy-MM-dd');
 
-export const defaultFollowUpDate = (fromISO: string): string => {
-  const d = new Date(fromISO);
-  d.setDate(d.getDate() + 3);
-  return d.toISOString().slice(0, 10);
-};
+export const defaultFollowUpDate = (fromISO: string): string =>
+  format(addDays(new Date(fromISO), 3), 'yyyy-MM-dd');
 
 /** A quote is terminal when closed as Won or Lost. */
 export const isTerminal = (q: Quote): boolean =>

@@ -1,14 +1,13 @@
 import { useState } from 'react';
+import { addDays, format } from 'date-fns';
 import type { Quote } from '@/types';
 import { todayISO, isOverdue, isDueToday } from '@/lib/dashboard';
 import { formatDate } from '@/lib/dashboard';
 import { Button } from '@/components/Button';
 import { cn } from '@/lib/cn';
 
-function addDays(fromISO: string, days: number): string {
-  const d = new Date(fromISO);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
+function addDaysToISO(fromISO: string, days: number): string {
+  return format(addDays(new Date(fromISO), days), 'yyyy-MM-dd');
 }
 
 const quickOptions = [
@@ -70,7 +69,7 @@ export function FollowUpControl({
               size="sm"
               full
               onClick={() => {
-                onSet(addDays(today, o.days));
+                onSet(addDaysToISO(today, o.days));
                 setOpen(false);
               }}
             >
