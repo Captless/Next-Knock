@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { QuoteRow } from '@/components/QuoteRow';
 import { FollowUpItem } from '@/components/FollowUpItem';
 import { Badge } from '@/components/Badge';
+import { ScreenshotCarousel } from '@/components/ScreenshotCarousel';
 import { todayISO } from '@/lib/dashboard';
 import type { Quote } from '@/types';
 import {
@@ -141,22 +142,61 @@ export function Landing() {
               </div>
             </div>
 
-            {/* Real product UI — follow-up panel */}
-            <Reveal className="order-first lg:order-none" id="product">
-              <div className="hero-visual overflow-hidden rounded-xl border border-line bg-surface shadow-pop">
-                <div className="flex items-center justify-between border-b border-line px-4 py-3">
-                  <span className="font-display text-sm font-semibold text-ink">Needs follow-up</span>
-                  <Badge tone="warn">{demos.due.length} today</Badge>
-                </div>
-                <div className="flex flex-col gap-2 p-3">
-                  {demos.due.map((q) => (
-                    <FollowUpItem key={q.id} quote={q} />
-                  ))}
-                </div>
-                <div className="border-t border-line px-4 py-2.5 text-xs text-ink-subtle">
-                  Tap to call or message, right from your phone.
-                </div>
-              </div>
+            {/* Real product UI — 3D screenshot carousel */}
+            <Reveal className="order-first w-full lg:order-none" id="product">
+              <ScreenshotCarousel
+                slides={[
+                  {
+                    frame: 'phone',
+                    node: (
+                      <div className="pointer-events-none">
+                        <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                          <span className="font-display text-sm font-semibold text-ink">New quote</span>
+                          <Badge tone="muted">Draft</Badge>
+                        </div>
+                        <div className="p-3">
+                          <QuoteRow quote={demos.list[4]!} />
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    frame: 'phone',
+                    node: (
+                      <div className="pointer-events-none">
+                        <div className="border-b border-line px-4 py-3">
+                          <span className="font-display text-sm font-semibold text-ink">Quotes</span>
+                        </div>
+                        <div className="flex flex-col gap-2 p-3">
+                          {demos.list.slice(0, 3).map((q) => (
+                            <QuoteRow
+                              key={q.id}
+                              quote={q}
+                              due={q.followUpDate === todayISO() && q.status === 'sent'}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    frame: 'phone',
+                    node: (
+                      <div className="pointer-events-none">
+                        <div className="border-b border-line px-4 py-3">
+                          <span className="font-display text-sm font-semibold text-ink">Outcome</span>
+                        </div>
+                        <div className="p-3">
+                          <QuoteRow quote={demos.list[3]!} />
+                          <p className="mt-3 text-center text-xs text-ink-subtle">
+                            Marked won. The loop is closed.
+                          </p>
+                        </div>
+                      </div>
+                    ),
+                  },
+                ]}
+              />
             </Reveal>
           </div>
         </section>
