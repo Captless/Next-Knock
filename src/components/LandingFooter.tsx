@@ -1,78 +1,47 @@
 import { Link } from 'react-router-dom';
 
-const productLinks = [
+const links = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Log in', to: '/login' },
-  { label: 'Sign up', to: '/signup' },
-];
-
-const companyLinks = [
   { label: 'About', to: '/about' },
-  { label: 'Contact', to: '/contact' },
-  { label: 'Privacy Policy', to: '/privacy' },
-  { label: 'Terms of Service', to: '/terms' },
+  { label: 'Log in', to: '/login' },
+  { label: 'Sign up', to: '/signup', primary: true },
+  { label: 'Privacy', to: '/privacy' },
+  { label: 'Terms', to: '/terms' },
 ];
 
 export function LandingFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="mx-auto max-w-5xl px-4 py-12">
-        <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-          {/* Brand */}
-          <div className="max-w-xs">
-            <div className="flex items-center gap-2">
-              <img src="/logo-wordmark.svg" alt="Next Knock" className="h-7 w-auto" />
-              <span className="font-display text-base font-semibold text-ink">Next Knock</span>
-            </div>
-            <p className="mt-3 text-sm text-ink-muted">
-              Know who to follow up with next.
-            </p>
+    <footer className="border-t border-line bg-bg">
+      <div className="mx-auto max-w-6xl px-4 py-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <img src="/logo-wordmark.svg" alt="Next Knock" className="h-5 w-auto" />
+            <span className="text-xs text-ink-subtle">© {year} Next Knock</span>
           </div>
-
-          {/* Link columns */}
-          <div className="grid grid-cols-2 gap-8 sm:gap-16">
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-subtle">
-                Product
-              </h3>
-              <ul className="mt-3 flex flex-col gap-2">
-                {productLinks.map((l) => (
-                  <li key={l.label}>
-                    {l.to ? (
-                      <Link to={l.to} className="text-sm text-ink-muted transition-colors hover:text-ink">
-                        {l.label}
-                      </Link>
-                    ) : (
-                      <a href={l.href} className="text-sm text-ink-muted transition-colors hover:text-ink">
-                        {l.label}
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-subtle">
-                Company
-              </h3>
-              <ul className="mt-3 flex flex-col gap-2">
-                {companyLinks.map((l) => (
-                  <li key={l.label}>
-                    <Link to={l.to} className="text-sm text-ink-muted transition-colors hover:text-ink">
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Legal bar */}
-        <div className="mt-10 flex flex-col items-center gap-4 border-t border-line pt-6 sm:flex-row sm:justify-between">
-          <p className="text-xs text-ink-subtle">© {year} Next Knock. All rights reserved.</p>
+          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm sm:justify-end" aria-label="Footer">
+            {links.map((l, i) => (
+              <span key={l.label} className="flex items-center gap-x-1.5">
+                {i > 0 && <span className="text-ink-subtle" aria-hidden>·</span>}
+                {l.to ? (
+                  <Link
+                    to={l.to}
+                    className={l.primary ? 'font-medium text-ink hover:text-ink/80' : 'text-ink-muted transition-colors hover:text-ink'}
+                  >
+                    {l.label}
+                  </Link>
+                ) : (
+                  <a
+                    href={l.href}
+                    className="text-ink-muted transition-colors hover:text-ink"
+                  >
+                    {l.label}
+                  </a>
+                )}
+              </span>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
