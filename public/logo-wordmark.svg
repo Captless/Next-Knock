@@ -1,6 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="290" viewBox="80 100 1360 290">
-  <path d="M150 150 L150 362 L255 362 L255 150 Q255 130 235 130 L170 130 Q150 130 150 150 Z" fill="#0A0A0A"/>
-  <circle cx="200" cy="246" r="14" fill="#FFFFFF"/>
-  <path d="M272 168 L272 344 L408 256 Z" fill="#0A0A0A"/>
-  <text x="556" y="312" font-family="Inter, Arial, sans-serif" font-size="148" font-weight="700" letter-spacing="-2" fill="#0A0A0A">Next Knock</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="200" viewBox="0 0 780 200">
+  <defs>
+    <mask id="knock">
+      <rect width="512" height="512" fill="#fff" />
+      <circle cx="212" cy="240" r="15" fill="#000" />
+    </mask>
+  </defs>
+  <g transform="translate(-77,-59) scale(0.647)">
+    <path d="M150 152 a22 22 0 0 1 22 -22 h81 a22 22 0 0 1 22 22 v188 a22 22 0 0 1 -22 22 h-81 a22 22 0 0 1 -22 -22 z" fill="#0A0A0A" mask="url(#knock)" />
+    <path d="M292 162 L292 330 L412 246 Z" fill="#0A0A0A" />
+  </g>
+  <text x="210" y="132" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="-2" fill="#0A0A0A">Next Knock</text>
 </svg>

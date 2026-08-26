@@ -119,8 +119,9 @@ export function Landing() {
                 Stop letting good cleaning quotes go cold.
               </h1>
               <p className="mt-6 max-w-xl text-lg text-ink-muted">
-                Next Knock keeps every quote visible, shows you what needs follow-up,
-                and helps you close the loop — without another complicated CRM.
+                Next Knock keeps your cleaning quotes visible, shows you what needs a
+                follow-up, and helps you close the loop. Made for cleaning businesses
+                across the US, not another complicated CRM.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -153,7 +154,7 @@ export function Landing() {
                   ))}
                 </div>
                 <div className="border-t border-line px-4 py-2.5 text-xs text-ink-subtle">
-                  Tap to call or message — from your phone, in one move.
+                  Tap to call or message, right from your phone.
                 </div>
               </div>
             </Reveal>
@@ -199,7 +200,7 @@ export function Landing() {
                 <ul className="mt-4 flex flex-col gap-3 text-base text-ink-muted">
                   {['Quote sent', 'No immediate response', 'Business gets busy', 'Quote disappears from attention', 'Follow-up missed'].map((s) => (
                     <li key={s} className="flex items-center gap-2">
-                      <span className="text-ink-subtle">—</span> {s}
+                      <span className="text-ink-subtle">-</span> {s}
                     </li>
                   ))}
                 </ul>
@@ -228,7 +229,7 @@ export function Landing() {
             <ol className="mt-10 flex flex-col gap-px overflow-hidden rounded-xl border border-line bg-line">
               {[
                 ['Create', 'Add customer, service, and amount in seconds.'],
-                ['Send', 'Mark the quote sent — Next Knock sets the follow-up.'],
+                ['Send', 'Mark the quote sent, and Next Knock sets the follow-up.'],
                 ['See', 'Every open quote stays in one list, never buried.'],
                 ['Follow up', 'Know exactly who needs a follow-up today.'],
                 ['Close', 'Mark won or lost. The loop is closed.'],
