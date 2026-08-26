@@ -179,14 +179,14 @@ export function QuoteDetail() {
         </div>
       </div>
 
-      <aside className="flex flex-col gap-3 lg:sticky lg:top-6 lg:self-start">
+      <aside className="flex flex-col gap-3 lg:mt-[144px]">
         {!terminal && !isLost && (
           <>
-            <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+            <div className="rounded-lg border border-line bg-surface p-3 shadow-card sm:p-4">
               <FollowUpControl quote={quote} onSet={onFollowUp} />
             </div>
 
-            <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+            <div className="rounded-lg border border-line bg-surface p-3 shadow-card sm:p-4">
               <p className="mb-3 text-sm font-medium text-ink">Actions</p>
               {quote.status === 'draft' ? (
                 <Button full onClick={sendQuote}>

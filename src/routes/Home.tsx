@@ -8,30 +8,6 @@ import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/Button';
 import { PlusIcon } from '@/components/Icon';
 
-function SummaryCard({
-  label,
-  count,
-  detail,
-  to,
-}: {
-  label: string;
-  count: number;
-  detail?: string;
-  to: string;
-}) {
-  const navigate = useNavigate();
-  return (
-    <button
-      onClick={() => navigate(to)}
-      className="flex flex-col rounded-lg border border-line bg-surface p-4 text-left shadow-card transition-colors hover:bg-bg active:bg-line/40"
-    >
-      <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">{label}</span>
-      <span className="mt-1 text-3xl font-semibold tracking-tight text-ink">{count}</span>
-      {detail && <span className="mt-1 text-sm text-ink-muted">{detail}</span>}
-    </button>
-  );
-}
-
 export function Home() {
   const { quotes, loading, error } = useQuotes();
   const navigate = useNavigate();
@@ -75,25 +51,32 @@ export function Home() {
         )
       ) : (
         <>
-          <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <SummaryCard
-              label="Needs Follow-up"
-              count={followUp.length}
-              to="/app/quotes?filter=needs_follow_up"
-            />
-            <SummaryCard
-              label="Won"
-              count={wonCount}
-              detail={`${formatAmountCents(wonValue)} estimated value`}
-              to="/app/quotes?filter=won"
-            />
-            <SummaryCard
-              label="Lost"
-              count={lostCount}
-              detail={`${formatAmountCents(lostValue)} potential value lost`}
-              to="/app/quotes?filter=lost"
-            />
-          </section>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+            <button
+              onClick={() => navigate('/app/quotes?filter=needs_follow_up')}
+              className="font-medium text-ink transition-colors hover:text-ink-muted"
+            >
+              Follow-up <span className="font-semibold">{followUp.length}</span>
+            </button>
+            <button
+              onClick={() => navigate('/app/quotes?filter=won')}
+              className="font-medium text-ink transition-colors hover:text-ink-muted"
+            >
+              Won <span className="font-semibold text-success">{wonCount}</span>
+              {wonCount > 0 && (
+                <span className="ml-1 text-ink-muted">{formatAmountCents(wonValue)}</span>
+              )}
+            </button>
+            <button
+              onClick={() => navigate('/app/quotes?filter=lost')}
+              className="font-medium text-ink transition-colors hover:text-ink-muted"
+            >
+              Lost <span className="font-semibold text-danger">{lostCount}</span>
+              {lostCount > 0 && (
+                <span className="ml-1 text-ink-muted">{formatAmountCents(lostValue)}</span>
+              )}
+            </button>
+          </div>
 
           <section className="flex flex-col gap-2">
             <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
