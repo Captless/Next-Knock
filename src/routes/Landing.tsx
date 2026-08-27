@@ -134,7 +134,7 @@ export function Landing() {
                 >
                   <PlusIcon className="h-5 w-5" /> Start free
                 </Button>
-                <a href="#demo" className="rounded-lg">
+                <a href="#how" className="rounded-lg">
                   <Button variant="secondary" size="lg">
                     See how it works <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -283,24 +283,6 @@ export function Landing() {
                 </li>
               ))}
             </ol>
-          </Reveal>
-        </section>
-
-        {/* Product demonstration — real QuoteRow list */}
-        <section id="demo" className="border-t border-line bg-surface py-20 sm:py-28">
-          <Reveal className="mx-auto max-w-3xl px-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-subtle">The product</p>
-            <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              This is the actual Next Knock view.
-            </h2>
-            <p className="mt-3 max-w-xl text-base text-ink-muted">
-              Real quotes, real statuses, real follow-up dates. Nothing fabricated.
-            </p>
-            <div className="mt-8 flex flex-col gap-2">
-              {demos.list.map((q) => (
-                <QuoteRow key={q.id} quote={q} due={q.followUpDate === todayISO() && q.status === 'sent'} />
-              ))}
-            </div>
           </Reveal>
         </section>
 

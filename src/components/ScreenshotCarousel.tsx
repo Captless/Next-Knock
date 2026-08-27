@@ -10,7 +10,7 @@ type Slide = {
 const scrollHidden = '[&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]';
 
 function Frame({ frame, children }: { frame: FrameKind; children: ReactNode }) {
-  const shell = 'border border-line bg-surface shadow-[0_14px_30px_-10px_rgba(10,10,10,0.20)]';
+  const shell = 'border border-line bg-surface shadow-[0_20px_45px_-12px_rgba(10,10,10,0.22)]';
   if (frame === 'phone') {
     return (
       <div className={`mx-auto flex h-[440px] w-[264px] flex-col overflow-hidden rounded-[2rem] ${shell}`}>
