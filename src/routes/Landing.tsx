@@ -346,7 +346,7 @@ export function Landing() {
                     'Mobile web app',
                   ],
                   cta: 'Try free',
-                  ctaVariant: 'secondary',
+                  ctaClass: 'border border-ink/25 bg-surface text-ink hover:border-ink hover:bg-ink hover:text-accentInk',
                 },
                 {
                   badge: 'Unlimited',
@@ -362,15 +362,10 @@ export function Landing() {
                     'Installable PWA on your phone',
                   ],
                   cta: 'Upgrade for $19.99',
-                  ctaVariant: 'primary',
+                  ctaClass: 'bg-ink text-accentInk hover:bg-ink/90 shadow-sm',
                 },
               ].map((plan) => (
-                <div key={plan.badge} className="relative flex flex-col rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
-                  {plan.badge === 'Unlimited' && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-success px-3 py-1 text-xs font-semibold text-white shadow-sm">
-                      Recommended
-                    </span>
-                  )}
+                <div key={plan.badge} className="flex flex-col rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
                   <span className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${plan.badgeClass}`}>
                     {plan.badge}
                   </span>
@@ -388,18 +383,16 @@ export function Landing() {
                   {plan.badge === 'Unlimited' && (
                     <p className="mt-4 text-xs font-medium text-success">30-day money-back guarantee</p>
                   )}
-                  <Button
-                    variant={plan.ctaVariant as 'primary' | 'secondary'}
-                    size="lg"
-                    full
-                    className="mt-auto pt-8"
+                  <button
+                    type="button"
                     onClick={() => {
                       trackEvent('cta_pricing');
                       window.location.href = '/signup';
                     }}
+                    className={`mt-auto w-full rounded-lg px-6 py-3.5 text-base font-semibold tracking-tight transition-[background-color,color,transform] active:scale-[0.98] tap select-none ${plan.ctaClass}`}
                   >
                     {plan.cta}
-                  </Button>
+                  </button>
                 </div>
               ))}
             </div>
