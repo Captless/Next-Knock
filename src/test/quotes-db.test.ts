@@ -42,6 +42,11 @@ class FakeDB {
     };
     return stmt;
   }
+  async batch(stmts: any[]): Promise<any[]> {
+    const out = [];
+    for (const s of stmts) out.push(await s.run());
+    return out;
+  }
 }
 
 const input: QuoteInput = {

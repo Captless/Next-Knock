@@ -48,6 +48,11 @@ class FakeDB {
     s.sql = sql;
     return s;
   }
+  async batch(stmts: any[]): Promise<any[]> {
+    const out = [];
+    for (const s of stmts) out.push(await s.run());
+    return out;
+  }
 }
 
 describe('authentication bypass', () => {

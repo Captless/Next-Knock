@@ -3,10 +3,17 @@ import type { Quote } from '@/types';
 import type { QuoteInput } from '@/lib/quote-schema';
 import type { QuotePatch } from '@/lib/quote-logic';
 
+export interface Usage {
+  plan: string;
+  used: number;
+  limit: number;
+}
+
 export interface QuotesState {
   quotes: Quote[];
   loading: boolean;
   error: string | null;
+  usage: Usage;
   addQuote: (input: QuoteInput) => Promise<Quote>;
   updateQuote: (id: string, patch: QuotePatch) => Promise<void>;
   removeQuote: (id: string) => Promise<void>;

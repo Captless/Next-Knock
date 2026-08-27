@@ -4,8 +4,8 @@ const links = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
   { label: 'About', to: '/about' },
-  { label: 'Log in', to: '/login' },
-  { label: 'Sign up', to: '/signup', primary: true },
+  { label: 'Customer Login', to: '/login' },
+  { label: 'Try free', to: '/signup', primary: true },
   { label: 'Privacy', to: '/privacy' },
   { label: 'Terms', to: '/terms' },
 ];

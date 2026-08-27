@@ -132,7 +132,7 @@ export function Landing() {
                     window.location.href = '/signup';
                   }}
                 >
-                  <PlusIcon className="h-5 w-5" /> Start free
+                  <PlusIcon className="h-5 w-5" /> Try Next Knock Free
                 </Button>
                 <a href="#how" className="rounded-lg">
                   <Button variant="secondary" size="lg">
@@ -327,12 +327,48 @@ export function Landing() {
           <Reveal className="mx-auto max-w-5xl px-4">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-subtle">Pricing</p>
-              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">One simple price</h2>
+              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Start free, upgrade when ready</h2>
+              <p className="mt-3 text-base text-ink-muted">Try the full product free. Upgrade for unlimited quotes.</p>
             </div>
-            <div className="mx-auto mt-10 max-w-md">
-              <div className="relative overflow-hidden rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+            <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
+              <div className="rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+                <span className="inline-block rounded-full bg-line/40 px-3 py-1 text-xs font-medium text-ink-muted">
+                  Free
+                </span>
+                <div className="mt-6 flex items-end justify-center gap-1">
+                  <span className="gradient-text font-display text-6xl font-semibold tracking-tight">$0</span>
+                </div>
+                <p className="mt-2 text-sm text-ink-muted">5 free quotes, forever.</p>
+                <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
+                  {[
+                    '5 lifetime quotes',
+                    'Automatic follow-up dates',
+                    'Know who needs follow-up today',
+                    'Tap-to-call & tap-to-message',
+                    'Won / lost outcome tracking',
+                    'Installable app on your phone',
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-ink">
+                      <CheckIcon className="h-4 w-4 shrink-0 text-success" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  full
+                  className="mt-8"
+                  onClick={() => {
+                    trackEvent('cta_pricing');
+                    window.location.href = '/signup';
+                  }}
+                >
+                  Try free
+                </Button>
+              </div>
+              <div className="relative overflow-hidden rounded-xl border border-ink bg-white p-8 text-center shadow-pop sm:p-10">
                 <span className="inline-block rounded-full bg-success/15 px-3 py-1 text-xs font-medium text-success">
-                  One-time purchase. Yours forever.
+                  Unlimited
                 </span>
                 <div className="mt-6 flex items-end justify-center gap-1">
                   <span className="mb-2 text-2xl font-semibold text-success">$</span>
@@ -342,11 +378,11 @@ export function Landing() {
                 <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
                   {[
                     'Unlimited quotes',
+                    'Everything in Free',
                     'Automatic follow-up dates',
                     'Know who needs follow-up today',
                     'Tap-to-call & tap-to-message',
                     'Won / lost outcome tracking',
-                    'Installable app on your phone',
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-ink">
                       <CheckIcon className="h-4 w-4 shrink-0 text-success" /> {f}
@@ -362,7 +398,7 @@ export function Landing() {
                     window.location.href = '/signup';
                   }}
                 >
-                  Start free
+                  Upgrade — $19.99
                 </Button>
                 <p className="mt-3 text-sm font-medium text-success">30-day money-back guarantee</p>
                 <p className="mt-1 text-xs text-ink-subtle">Final price confirmed at checkout.</p>
@@ -395,7 +431,7 @@ export function Landing() {
             <h2 className="font-display text-3xl font-semibold tracking-tight text-accentInk sm:text-4xl">
               Ready to stop losing track of your quotes?
             </h2>
-            <p className="mt-3 text-base text-white/80">Start free. Keep every follow-up in view.</p>
+            <p className="mt-3 text-base text-white/80">Try it free. Keep every follow-up in view.</p>
             <Button
               size="lg"
               variant="secondary"
@@ -405,7 +441,7 @@ export function Landing() {
                 window.location.href = '/signup';
               }}
             >
-              Start free <ChevronRight className="h-4 w-4" />
+              Try Next Knock Free <ChevronRight className="h-4 w-4" />
             </Button>
           </Reveal>
         </section>

@@ -5,6 +5,7 @@ import { Button } from '@/components/Button';
 import { Field, Input, Textarea } from '@/components/Input';
 import { Select } from '@/components/Select';
 import { useToast } from '@/components/Toast';
+import { UpgradeModal } from '@/components/UpgradeModal';
 import {
   quoteSchema,
   parseAmountToCents,
@@ -52,6 +53,7 @@ export function QuoteForm() {
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -102,7 +104,12 @@ export function QuoteForm() {
         navigate(`/app/quotes/${created.id}`);
       }
     } catch (err) {
-      notify(err instanceof Error ? err.message : 'Could not save quote', 'error');
+      const msg = err instanceof Error ? err.message : 'Could not save quote';
+      if (msg.includes('QUOTE_LIMIT_REACHED')) {
+        setShowUpgrade(true);
+      } else {
+        notify(msg, 'error');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -199,6 +206,8 @@ export function QuoteForm() {
               : `Create quote${form.amount ? ` · ${formatAmountCents(parseAmountToCents(form.amount))}` : ''}`}
         </Button>
       </form>
+
+      <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
     </div>
   );
 }

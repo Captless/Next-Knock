@@ -10,6 +10,8 @@ import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/Button';
 import { PlusIcon } from '@/components/Icon';
 import { cn } from '@/lib/cn';
+import { UsageIndicator } from '@/components/UsageIndicator';
+import { UpgradeModal } from '@/components/UpgradeModal';
 
 const matchesFilter = (q: Quote, filter: QuoteFilter, today: string): boolean => {
   switch (filter) {
@@ -35,9 +37,10 @@ const matchesSearch = (q: Quote, term: string): boolean => {
 };
 
 export function Quotes() {
-  const { quotes, loading, error } = useQuotes();
+  const { quotes, loading, error, usage } = useQuotes();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
+  const [showUpgrade, setShowUpgrade] = useState(false);
   const today = todayISO();
 
   const initialFilter = (params.get('filter') as QuoteFilter) || 'all';
@@ -65,14 +68,27 @@ export function Quotes() {
     [list],
   );
 
+  const onNew = async () => {
+    if (usage.plan === 'free' && usage.used >= usage.limit) {
+      setShowUpgrade(true);
+      return;
+    }
+    navigate('/app/quotes/new');
+  };
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Quotes</h1>
-        <Button variant="primary" size="md" onClick={() => navigate('/app/quotes/new')}>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-ink">Quotes</h1>
+          <UsageIndicator />
+        </div>
+        <Button variant="primary" size="md" onClick={onNew}>
           <PlusIcon className="h-5 w-5" /> New Quote
         </Button>
       </div>
+
+      <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
 
       {error && !loading ? (
         <ErrorState title="Couldn't load quotes" message={error} />

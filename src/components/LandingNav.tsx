@@ -31,10 +31,10 @@ export function LandingNav() {
             to="/login"
             className="hidden rounded-md text-sm font-medium text-ink-muted transition-colors hover:text-ink focus-visible:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:inline"
           >
-            Log in
+            Customer Login
           </Link>
           <Button size="sm" onClick={() => (window.location.href = '/signup')}>
-            Get started
+            Try free
           </Button>
         </div>
       </div>

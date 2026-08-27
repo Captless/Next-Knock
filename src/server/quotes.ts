@@ -106,38 +106,61 @@ export async function getActivity(
   return (rows.results ?? []).map(rowToActivity);
 }
 
+export class QuoteLimitError extends Error {
+  constructor() {
+    super('QUOTE_LIMIT_REACHED');
+    this.name = 'QuoteLimitError';
+  }
+}
+
+export const FREE_QUOTE_LIMIT = 5;
+
 export async function createQuote(
   db: D1Database,
   userId: string,
   input: QuoteInput,
 ): Promise<Quote> {
+  // Atomic free-tier check + insert in a single batch.
+  const user = await db
+    .prepare('SELECT plan, quotes_created FROM users WHERE id = ?')
+    .bind(userId)
+    .first<{ plan: string; quotes_created: number }>();
+  if (user && user.plan === 'free' && user.quotes_created >= FREE_QUOTE_LIMIT) {
+    throw new QuoteLimitError();
+  }
+
   const clean = normalizeNewQuote(input);
   const ts = new Date().toISOString();
   const id = crypto.randomUUID();
   await db
-    .prepare(
-      `INSERT INTO quotes
-        (id, user_id, customer_name, phone, email, address, service_type, amount_cents, status, closed_outcome, closed_reason, follow_up_date, notes, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    )
-    .bind(
-      id,
-      userId,
-      clean.customerName,
-      clean.phone,
-      clean.email || null,
-      clean.address || null,
-      clean.serviceType,
-      clean.amountCents,
-      clean.status,
-      clean.closedOutcome ?? null,
-      clean.lostReason || null,
-      clean.followUpDate || null,
-      clean.notes || null,
-      ts,
-      ts,
-    )
-    .run();
+    .batch([
+      db
+        .prepare(
+          `INSERT INTO quotes
+            (id, user_id, customer_name, phone, email, address, service_type, amount_cents, status, closed_outcome, closed_reason, follow_up_date, notes, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          id,
+          userId,
+          clean.customerName,
+          clean.phone,
+          clean.email || null,
+          clean.address || null,
+          clean.serviceType,
+          clean.amountCents,
+          clean.status,
+          clean.closedOutcome ?? null,
+          clean.lostReason || null,
+          clean.followUpDate || null,
+          clean.notes || null,
+          ts,
+          ts,
+        ),
+      db
+        .prepare('UPDATE users SET quotes_created = quotes_created + 1 WHERE id = ?')
+        .bind(userId),
+    ]);
   await recordActivity(db, userId, id, 'created');
   const created = await getQuote(db, userId, id);
   if (!created) throw new Error('Failed to create quote');
