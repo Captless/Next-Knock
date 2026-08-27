@@ -339,11 +339,11 @@ export function Landing() {
                   sub: '5 free quotes, forever.',
                   features: [
                     '5 lifetime quotes',
-                    'Automatic follow-up dates',
-                    'Know who needs follow-up today',
-                    'Tap-to-call and tap-to-message',
-                    'Won / lost outcome tracking',
-                    'Installable app on your phone',
+                    'Manual follow-up tracking',
+                    'Basic quote list',
+                    'Tap-to-call',
+                    'Won or lost tagging',
+                    'Mobile web app',
                   ],
                   cta: 'Try free',
                   ctaVariant: 'secondary',
@@ -355,17 +355,22 @@ export function Landing() {
                   sub: 'One-time purchase. No subscription.',
                   features: [
                     'Unlimited quotes',
-                    'Everything in Free, and more',
                     'Automatic follow-up dates',
-                    'Know who needs follow-up today',
+                    'Today view: who to call next',
                     'Tap-to-call and tap-to-message',
-                    'Won / lost outcome tracking',
+                    'Full outcome history and activity log',
+                    'Installable PWA on your phone',
                   ],
                   cta: 'Upgrade for $19.99',
                   ctaVariant: 'primary',
                 },
               ].map((plan) => (
-                <div key={plan.badge} className="flex flex-col rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+                <div key={plan.badge} className="relative flex flex-col rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+                  {plan.badge === 'Unlimited' && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-success px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                      Recommended
+                    </span>
+                  )}
                   <span className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${plan.badgeClass}`}>
                     {plan.badge}
                   </span>
@@ -380,6 +385,9 @@ export function Landing() {
                       </li>
                     ))}
                   </ul>
+                  {plan.badge === 'Unlimited' && (
+                    <p className="mt-4 text-xs font-medium text-success">30-day money-back guarantee</p>
+                  )}
                   <Button
                     variant={plan.ctaVariant as 'primary' | 'secondary'}
                     size="lg"
@@ -392,12 +400,6 @@ export function Landing() {
                   >
                     {plan.cta}
                   </Button>
-                  {plan.badge === 'Unlimited' && (
-                    <>
-                      <p className="mt-3 text-sm font-medium text-success">30-day money-back guarantee</p>
-                      <p className="mt-1 text-xs text-ink-subtle">Final price confirmed at checkout.</p>
-                    </>
-                  )}
                 </div>
               ))}
             </div>
