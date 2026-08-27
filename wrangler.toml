@@ -2,10 +2,6 @@ name = "next-knock"
 compatibility_date = "2025-01-15"
 pages_build_output_dir = "./dist"
 
-[assets]
-directory = "./public"
-
-# D1 database (Phase 4)
 [[d1_databases]]
 binding = "DB"
 database_name = "next-knock"
