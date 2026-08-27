@@ -331,83 +331,78 @@ export function Landing() {
               <p className="mt-3 text-base text-ink-muted">Try the full product free. Upgrade for unlimited quotes.</p>
             </div>
             <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
-              <div className="rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
-                <span className="inline-block rounded-full bg-line/40 px-3 py-1 text-xs font-medium text-ink-muted">
-                  Free
-                </span>
-                <div className="mt-6 flex items-end justify-center gap-1">
-                  <span className="gradient-text font-display text-6xl font-semibold tracking-tight">$0</span>
-                </div>
-                <p className="mt-2 text-sm text-ink-muted">5 free quotes, forever.</p>
-                <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
-                  {[
+              {[
+                {
+                  badge: 'Free',
+                  badgeClass: 'bg-line/40 text-ink-muted',
+                  price: '$0',
+                  sub: '5 free quotes, forever.',
+                  features: [
                     '5 lifetime quotes',
                     'Automatic follow-up dates',
                     'Know who needs follow-up today',
-                    'Tap-to-call & tap-to-message',
+                    'Tap-to-call and tap-to-message',
                     'Won / lost outcome tracking',
                     'Installable app on your phone',
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-ink">
-                      <CheckIcon className="h-4 w-4 shrink-0 text-success" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  full
-                  className="mt-8"
-                  onClick={() => {
-                    trackEvent('cta_pricing');
-                    window.location.href = '/signup';
-                  }}
-                >
-                  Try free
-                </Button>
-              </div>
-              <div className="relative overflow-hidden rounded-xl border border-ink bg-white p-8 text-center shadow-pop sm:p-10">
-                <span className="inline-block rounded-full bg-success/15 px-3 py-1 text-xs font-medium text-success">
-                  Unlimited
-                </span>
-                <div className="mt-6 flex items-end justify-center gap-1">
-                  <span className="mb-2 text-2xl font-semibold text-success">$</span>
-                  <span className="gradient-text font-display text-7xl font-semibold tracking-tight">19.99</span>
-                </div>
-                <p className="mt-2 text-sm text-ink-muted">One-time purchase. No subscription.</p>
-                <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
-                  {[
+                  ],
+                  cta: 'Try free',
+                  ctaVariant: 'secondary',
+                },
+                {
+                  badge: 'Unlimited',
+                  badgeClass: 'bg-success/15 text-success',
+                  price: '$19.99',
+                  sub: 'One-time purchase. No subscription.',
+                  features: [
                     'Unlimited quotes',
-                    'Everything in Free',
+                    'Everything in Free, and more',
                     'Automatic follow-up dates',
                     'Know who needs follow-up today',
-                    'Tap-to-call & tap-to-message',
+                    'Tap-to-call and tap-to-message',
                     'Won / lost outcome tracking',
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-ink">
-                      <CheckIcon className="h-4 w-4 shrink-0 text-success" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  size="lg"
-                  full
-                  className="mt-8"
-                  onClick={() => {
-                    trackEvent('cta_pricing');
-                    window.location.href = '/signup';
-                  }}
-                >
-                  Upgrade — $19.99
-                </Button>
-                <p className="mt-3 text-sm font-medium text-success">30-day money-back guarantee</p>
-                <p className="mt-1 text-xs text-ink-subtle">Final price confirmed at checkout.</p>
-              </div>
+                  ],
+                  cta: 'Upgrade for $19.99',
+                  ctaVariant: 'primary',
+                },
+              ].map((plan) => (
+                <div key={plan.badge} className="flex flex-col rounded-xl border border-line bg-white p-8 text-center shadow-pop sm:p-10">
+                  <span className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${plan.badgeClass}`}>
+                    {plan.badge}
+                  </span>
+                  <div className="mt-6 flex items-end justify-center gap-1">
+                    <span className="gradient-text font-display text-7xl font-semibold tracking-tight">{plan.price}</span>
+                  </div>
+                  <p className="mt-2 text-sm text-ink-muted">{plan.sub}</p>
+                  <ul className="mx-auto mt-8 flex max-w-xs flex-col gap-3 text-left">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm text-ink">
+                        <CheckIcon className="h-4 w-4 shrink-0 text-success" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    variant={plan.ctaVariant as 'primary' | 'secondary'}
+                    size="lg"
+                    full
+                    className="mt-auto pt-8"
+                    onClick={() => {
+                      trackEvent('cta_pricing');
+                      window.location.href = '/signup';
+                    }}
+                  >
+                    {plan.cta}
+                  </Button>
+                  {plan.badge === 'Unlimited' && (
+                    <>
+                      <p className="mt-3 text-sm font-medium text-success">30-day money-back guarantee</p>
+                      <p className="mt-1 text-xs text-ink-subtle">Final price confirmed at checkout.</p>
+                    </>
+                  )}
+                </div>
+              ))}
             </div>
           </Reveal>
         </section>
-
-        {/* FAQ */}
         <section id="faq" className="border-t border-line py-20 sm:py-28">
           <Reveal className="mx-auto max-w-3xl px-4">
             <div className="mx-auto max-w-2xl text-center">

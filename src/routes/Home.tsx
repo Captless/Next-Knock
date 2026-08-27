@@ -7,11 +7,14 @@ import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/Button';
 import { PlusIcon } from '@/components/Icon';
+import { UpgradeModal } from '@/components/UpgradeModal';
+import { useState } from 'react';
 
 export function Home() {
-  const { quotes, loading, error } = useQuotes();
+  const { quotes, loading, error, usage } = useQuotes();
   const navigate = useNavigate();
   const today = todayISO();
+  const [showUpgrade, setShowUpgrade] = useState(false);
   const { followUp } = bucketQuotes(quotes, today);
 
   const won = quotes.filter((q) => q.status === 'closed' && q.closedOutcome === 'won');
@@ -31,14 +34,24 @@ export function Home() {
     );
   }
 
+  const onNew = () => {
+    if (usage.plan === 'free' && usage.used >= usage.limit) {
+      setShowUpgrade(true);
+      return;
+    }
+    navigate('/app/quotes/new');
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-ink">Home</h1>
-        <Button variant="primary" size="md" onClick={() => navigate('/app/quotes/new')}>
+        <Button variant="primary" size="md" onClick={onNew}>
           <PlusIcon className="h-5 w-5" /> New Quote
         </Button>
       </div>
+
+      <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
 
       {quotes.length === 0 ? (
         loading ? (
